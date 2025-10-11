@@ -4,29 +4,32 @@ A modern, privacy-first web application for reading EPUB novels with a clean int
 
 ## ✨ Features
 
-### 📚 Core Reading Experience
+### 📚 Core Reading
 - **EPUB Support**: Upload and read EPUB files with full chapter navigation
-- **Reading Progress**: Automatic progress tracking and resume functionality
-- **Chapter Navigation**: Easy switching between chapters with progress indicators
-- **Responsive Design**: Optimized for both desktop and mobile devices
+- **Smart TOC**: Table of Contents-based chapter grouping and navigation
+- **Internal Links**: Working links within chapters (e.g., from Contents page)
+- **Reading Progress**: Automatic progress tracking with visual indicators
+- **Resume Reading**: Continue exactly where you left off
 
-### 🎨 Customization Options
-- **Font Settings**: Multiple font families (Serif, Sans-serif, Monospace, Merriweather, Open Sans, Literata, Garamond)
-- **Typography Control**: Adjustable font size, line height, and text alignment
-- **Theme Support**: Dark mode (default) and light mode with smooth transitions
-- **Layout Options**: Customizable max-width for optimal reading experience
+### 🎨 Customization
+- **8 Font Options**: Serif, Sans, Mono, Merriweather, Open Sans, Literata, Garamond, OpenDyslexic
+- **Dyslexia-Friendly**: OpenDyslexic font for better readability
+- **Typography Control**: Font size (14-24px), line height (1.4-2.0), text alignment (left, center, right, justify)
+- **Theme Support**: Dark mode (default) and light mode
+- **Content Width**: Adjustable max-width (600-900px)
+- **Breathing Space**: Novel-like paragraph spacing for comfortable reading
 
 ### 🔒 Privacy & Security
-- **100% Local Storage**: All EPUB files and reading progress stored locally in your browser
-- **No Data Collection**: Zero tracking, analytics, or external data transmission
-- **No External APIs**: Runs entirely client-side without server communication
-- **Open Source**: Fully transparent codebase for security verification
+- **100% Local**: All data stored in browser IndexedDB
+- **Zero Tracking**: No analytics, cookies, or external servers
+- **No Upload**: Files never leave your device
+- **Open Source**: Fully transparent and verifiable code
 
 ### 📱 User Experience
-- **Mobile-First Design**: Touch-friendly interface with proper tap targets
-- **Keyboard Navigation**: Full keyboard support for accessibility
-- **Smooth Scrolling**: Hidden scrollbars with fluid reading experience
-- **Safe Area Support**: Proper spacing on devices with home indicators
+- **Mobile-Optimized**: Touch-friendly with proper safe areas
+- **Clean UI**: Hidden scrollbars and minimal distractions
+- **Responsive Design**: Consistent experience across all devices
+- **Floating Actions**: Easy access to upload without clutter
 
 ## 🚀 Quick Start
 
@@ -89,21 +92,16 @@ A modern, privacy-first web application for reading EPUB novels with a clean int
 - **Storage**: IndexedDB for local data persistence
 - **Theme**: next-themes for dark/light mode support
 
-## 🎯 Key Improvements
+## 🎯 Recent Updates
 
-### Recent Updates
-- **Mobile UI Optimization**: Improved touch targets and responsive design
-- **Single CTA Strategy**: Cleaner interface with focused user actions
-- **Consistent Layout**: Standardized max-width across all pages
-- **Dark Mode Default**: Better reading experience in low light
-- **Accessibility**: Enhanced contrast and keyboard navigation
-- **Content Visibility**: Fixed bottom navigation overlap issues
-
-### Design Philosophy
-- **Privacy First**: No external dependencies or data collection
-- **User-Centric**: Intuitive interface with minimal learning curve
-- **Performance**: Fast loading and smooth interactions
-- **Accessibility**: WCAG compliant with proper contrast ratios
+- **Smart TOC Navigation**: Chapters grouped by Table of Contents structure, not just file order
+- **Internal Link Support**: Working navigation from TOC pages to specific chapters
+- **OpenDyslexic Font**: Added dyslexia-friendly font option
+- **Breathing Space**: Novel-like paragraph spacing for comfortable long reading sessions
+- **Persistent Settings**: Reader preferences saved across chapters and sessions
+- **Accurate Chapter Count**: Shows actual story chapters, excluding front/back matter
+- **Mobile-First UI**: Optimized button sizes, safe areas, and floating actions
+- **Consistent Layout**: Standardized max-width (900px) across all pages
 
 ## 📱 Browser Support
 

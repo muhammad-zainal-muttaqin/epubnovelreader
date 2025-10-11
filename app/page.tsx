@@ -64,23 +64,23 @@ export default function HomePage() {
           <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-16">
             <div className="p-4 sm:p-6">
               <BookOpen className="h-12 w-12 mx-auto mb-4 text-primary" />
-              <h3 className="text-lg font-semibold mb-2">Clean Reading</h3>
+              <h3 className="text-lg font-semibold mb-2">Smart Reading</h3>
               <p className="text-muted-foreground text-sm">
-                Distraction-free interface optimized for comfortable reading
+                TOC-based navigation, internal links, and automatic progress tracking
               </p>
             </div>
             <div className="p-4 sm:p-6">
               <Upload className="h-12 w-12 mx-auto mb-4 text-primary" />
               <h3 className="text-lg font-semibold mb-2">Fully Customizable</h3>
               <p className="text-muted-foreground text-sm">
-                Adjust fonts, sizes, alignment, and themes to your preference
+                8 fonts including OpenDyslexic, adjustable spacing, themes, and alignment
               </p>
             </div>
             <div className="p-4 sm:p-6">
               <Shield className="h-12 w-12 mx-auto mb-4 text-primary" />
               <h3 className="text-lg font-semibold mb-2">Privacy First</h3>
               <p className="text-muted-foreground text-sm">
-                All data stays local in your browser - no cloud, no tracking
+                100% local storage - your books never leave your device
               </p>
             </div>
           </div>
