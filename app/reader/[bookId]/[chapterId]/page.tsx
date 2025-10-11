@@ -232,13 +232,24 @@ export default function ReaderPage() {
   const currentChapter = chapters[currentChapterIndex]
   const overallProgress = Math.min(((currentChapterIndex + scrollProgress / 100) / chapters.length) * 100, 100)
 
+  // Determine display title consistent with TOC grouping
+  let displayChapterTitle = currentChapter?.title || ""
+  if (tocChapters && tocChapters.length > 0) {
+    const tocGroup = tocChapters.find(
+      (tc) => currentChapterIndex >= tc.startIndex && currentChapterIndex <= tc.endIndex,
+    )
+    if (tocGroup) {
+      displayChapterTitle = tocGroup.title
+    }
+  }
+
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
       <ProgressBar progress={overallProgress} />
 
       <ReaderHeader
         bookTitle={book.title}
-        chapterTitle={currentChapter.title}
+        chapterTitle={displayChapterTitle}
         progress={overallProgress}
         onSettingsClick={() => setSettingsOpen(true)}
       />
