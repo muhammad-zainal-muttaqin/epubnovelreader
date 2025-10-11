@@ -135,17 +135,17 @@
     display: none; /* WebKit */
   }
 
-  /* Smooth scrolling behavior */
-  html {
+  /* Smooth scrolling behavior - disabled to prevent conflicts with custom animations */
+  /* html {
     scroll-behavior: smooth;
-  }
+  } */
 
-  /* Enhanced smooth scrolling for webkit browsers */
-  @supports (scroll-behavior: smooth) {
+  /* Enhanced smooth scrolling for webkit browsers - disabled */
+  /* @supports (scroll-behavior: smooth) {
     * {
       scroll-behavior: smooth;
     }
-  }
+  } */
 
   /* Added scrollbar-hide utility class */
   .scrollbar-hide {
@@ -157,11 +157,10 @@
     display: none;
   }
 
-  /* Professional smooth scrolling for chapter content */
+  /* Professional smooth scrolling for chapter content - simplified */
   .chapter-scroll {
-    scroll-behavior: smooth;
     scroll-padding-top: 2rem;
-    scroll-snap-type: y proximity;
+    /* scroll-snap-type: y proximity; - disabled to prevent conflicts */
   }
 
   /* Smooth transitions for better UX */
@@ -173,7 +172,7 @@
   @media (max-width: 768px) {
     .chapter-scroll {
       -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
+      /* scroll-behavior: smooth; - disabled to prevent conflicts */
     }
   }
 
