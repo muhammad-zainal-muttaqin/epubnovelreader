@@ -57,7 +57,7 @@ export interface Progress {
 export interface ReaderSettings {
   fontSize: number // 14-24px
   theme: "light" | "dark"
-  fontFamily: "sans" | "serif" | "mono"
+  fontFamily: "sans" | "serif" | "mono" | "merriweather" | "open-sans" | "literata" | "garamond"
   lineHeight: number // 1.4-2.0
   maxWidth: number // 600-800px
 }

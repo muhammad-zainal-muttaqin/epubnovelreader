@@ -235,7 +235,7 @@ export default function ReaderPage() {
         onSettingsClick={() => setSettingsOpen(true)}
       />
 
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1">
         <ChapterContent
           content={currentChapter.content}
           fontSize={settings.fontSize}

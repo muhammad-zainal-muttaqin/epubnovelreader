@@ -39,6 +39,10 @@ export function ChapterContent({ content, fontSize, fontFamily, lineHeight, maxW
     sans: "font-sans",
     serif: "font-serif",
     mono: "font-mono",
+    merriweather: "font-[family-name:var(--font-merriweather)]",
+    "open-sans": "font-[family-name:var(--font-open-sans)]",
+    literata: "font-[family-name:var(--font-literata)]",
+    garamond: "font-[family-name:var(--font-garamond)]",
   }[fontFamily]
 
   return (

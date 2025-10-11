@@ -42,8 +42,12 @@ export function SettingsDialog({ open, onOpenChange, settings, onSettingsChange 
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="sans">Sans Serif</SelectItem>
-                <SelectItem value="serif">Serif</SelectItem>
+                <SelectItem value="sans">Geist Sans</SelectItem>
+                <SelectItem value="open-sans">Open Sans</SelectItem>
+                <SelectItem value="serif">Geist Serif</SelectItem>
+                <SelectItem value="merriweather">Merriweather</SelectItem>
+                <SelectItem value="literata">Literata</SelectItem>
+                <SelectItem value="garamond">Garamond</SelectItem>
                 <SelectItem value="mono">Monospace</SelectItem>
               </SelectContent>
             </Select>
@@ -71,20 +75,6 @@ export function SettingsDialog({ open, onOpenChange, settings, onSettingsChange 
               max={900}
               step={50}
             />
-          </div>
-
-          {/* Theme */}
-          <div className="space-y-2">
-            <Label>Theme</Label>
-            <Select value={settings.theme} onValueChange={(value: any) => onSettingsChange({ theme: value })}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </DialogContent>

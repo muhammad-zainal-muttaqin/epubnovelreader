@@ -43,10 +43,10 @@ export function BookCard({ book, onDelete }: BookCardProps) {
           </div>
 
           {/* Info */}
-          <div className="flex flex-1 flex-col justify-between">
-            <div>
-              <h3 className="line-clamp-2 text-balance font-semibold leading-tight">{book.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{book.author}</p>
+          <div className="flex flex-1 flex-col justify-between overflow-hidden">
+            <div className="overflow-hidden">
+              <h3 className="break-words font-semibold leading-tight" title={book.title}>{book.title}</h3>
+              <p className="mt-1 text-sm text-muted-foreground truncate" title={book.author}>{book.author}</p>
               {book.description && (
                 <p className="mt-2 line-clamp-2 text-pretty text-xs text-muted-foreground">{book.description}</p>
               )}

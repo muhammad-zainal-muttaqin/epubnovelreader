@@ -47,7 +47,7 @@ const ALLOWED_TAGS = new Set([
 
 const ALLOWED_ATTRIBUTES = new Set(["href", "src", "alt", "title", "class", "id", "width", "height", "style"])
 
-const DANGEROUS_PROTOCOLS = ["javascript:", "data:", "vbscript:"]
+const DANGEROUS_PROTOCOLS = ["javascript:", "vbscript:"]
 
 export function sanitizeHtml(html: string): string {
   if (typeof window === "undefined") return html

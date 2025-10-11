@@ -2,16 +2,31 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { Crimson_Text } from "next/font/google"
+import { Merriweather, Open_Sans, Literata, EB_Garamond } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const crimsonText = Crimson_Text({
-  weight: ["400", "600", "700"],
+const merriweather = Merriweather({
+  weight: ["400", "700"],
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-merriweather",
+})
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open-sans",
+})
+
+const literata = Literata({
+  subsets: ["latin"],
+  variable: "--font-literata",
+})
+
+const garamond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-garamond",
 })
 
 export const metadata: Metadata = {
@@ -27,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${crimsonText.variable}`}>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${merriweather.variable} ${openSans.variable} ${literata.variable} ${garamond.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <Suspense fallback={null}>{children}</Suspense>
         </ThemeProvider>
