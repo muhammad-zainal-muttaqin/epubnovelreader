@@ -613,7 +613,7 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
     title,
     author,
     cover,
-    totalChapters: chapters.length,
+    totalChapters: tocChapters.length > 0 ? tocChapters.length : chapters.length,
     currentChapter: 0,
     progress: 0,
     addedAt: Date.now(),
