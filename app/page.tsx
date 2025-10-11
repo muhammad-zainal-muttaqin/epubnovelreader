@@ -86,13 +86,48 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Privacy Section */}
+        <div className="mt-24">
+          <h2 className="text-3xl font-bold text-center mb-12">Privacy First</h2>
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="p-8 rounded-lg border bg-muted/50">
+              <h3 className="text-xl font-semibold mb-4">Your Data Stays Local</h3>
+              <p className="text-muted-foreground mb-4">
+                All your EPUB files and reading progress are stored locally in your browser using IndexedDB. 
+                No data is sent to external servers or cloud services.
+              </p>
+              <div className="grid gap-4 md:grid-cols-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Files stored locally in browser</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>No data collection or tracking</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>No external API calls</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Open source and transparent</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
       <footer className="border-t mt-24">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center text-muted-foreground">
-            <p>&copy; 2025 EPUB Novel Reader. Built with Next.js 15 and Tailwind CSS 4.</p>
+            <p className="mb-2">&copy; 2025 EPUB Novel Reader. Built with Next.js 15 and Tailwind CSS 4.</p>
+            <Button variant="link" onClick={() => router.push("/privacy")} className="text-muted-foreground">
+              Privacy Policy
+            </Button>
           </div>
         </div>
       </footer>

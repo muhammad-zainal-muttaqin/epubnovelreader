@@ -11,6 +11,17 @@ A modern web application for reading EPUB novels with a clean interface and comp
 - 💾 Automatic reading progress
 - 🌙 Dark/light mode
 
+## Privacy
+
+This application is **privacy-first** and designed with your data security in mind:
+
+- **Local Storage Only**: All EPUB files and reading progress are stored locally in your browser using IndexedDB
+- **No Data Collection**: We don't collect, track, or transmit any personal information
+- **No External APIs**: The app runs entirely in your browser without external server communication
+- **Open Source**: The entire codebase is open source for transparency and verification
+
+Your files and reading data never leave your device.
+
 ## Technology
 
 - **Framework**: Next.js 15
