@@ -455,18 +455,51 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
         
         // Clean up filename to make it readable
         if (filename) {
-          // Convert common patterns
-          if (filename.toLowerCase().includes("cover")) {
+          const lowerFilename = filename.toLowerCase()
+          
+          // Convert common patterns (priority order matters!)
+          if (lowerFilename.includes("cover")) {
             chapterTitle = "Cover"
-          } else if (filename.toLowerCase().includes("copyright")) {
+          } else if (lowerFilename.includes("copyright")) {
             chapterTitle = "Copyright"
-          } else if (filename.toLowerCase().includes("toc") || filename.toLowerCase().includes("contents")) {
+          } else if (lowerFilename.includes("toc") || lowerFilename === "contents") {
             chapterTitle = "Contents"
-          } else if (filename.toLowerCase().includes("title")) {
+          } else if (lowerFilename.includes("titlepage") || lowerFilename === "title") {
             chapterTitle = "Title Page"
-          } else if (filename.toLowerCase().match(/^(ch|chap|chapter)[\s_-]*\d+/i)) {
-            // Chapter filenames like "ch01", "chapter_1", etc
-            chapterTitle = filename.replace(/[\s_-]+/g, " ").replace(/^(ch|chap)/i, "Chapter ")
+          } else if (lowerFilename.includes("dedication")) {
+            chapterTitle = "Dedication"
+          } else if (lowerFilename.includes("preface") || lowerFilename.includes("foreword")) {
+            chapterTitle = "Preface"
+          } else if (lowerFilename.includes("prologue")) {
+            chapterTitle = "Prologue"
+          } else if (lowerFilename.includes("epilogue")) {
+            chapterTitle = "Epilogue"
+          } else if (lowerFilename.includes("afterword")) {
+            chapterTitle = "Afterword"
+          } else if (lowerFilename.includes("insert") || lowerFilename.includes("illustration")) {
+            // Extract number from insert001, insert002, etc
+            const insertMatch = filename.match(/(\d+)/)
+            if (insertMatch) {
+              chapterTitle = `Insert ${insertMatch[1]}`
+            } else {
+              chapterTitle = "Insert"
+            }
+          } else if (lowerFilename.match(/^(ch|chap|chapter)[\s_-]*\d+/)) {
+            // Chapter filenames like "ch01", "chapter_1", "chapter001"
+            const numMatch = filename.match(/\d+/)
+            if (numMatch) {
+              const chapterNum = parseInt(numMatch[0], 10)
+              chapterTitle = `Chapter ${chapterNum}`
+            } else {
+              chapterTitle = filename.replace(/[\s_-]+/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+            }
+          } else if (lowerFilename.match(/^apter[\s_-]*\d+/)) {
+            // Handle "apter001" pattern (missing 'ch')
+            const numMatch = filename.match(/\d+/)
+            if (numMatch) {
+              const chapterNum = parseInt(numMatch[0], 10)
+              chapterTitle = `Chapter ${chapterNum}`
+            }
           } else {
             // Use filename as-is but capitalize
             chapterTitle = filename.replace(/[\s_-]+/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
