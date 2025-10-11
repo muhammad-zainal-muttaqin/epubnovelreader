@@ -37,24 +37,24 @@ A modern, privacy-first web application for reading EPUB novels with a clean int
 ### Installation
 
 1. **Clone the repository**
-   ```bash
+   \`\`\`bash
    git clone <repository-url>
    cd epubnovelreader
-   ```
+   \`\`\`
 
 2. **Install dependencies**
-   ```bash
+   \`\`\`bash
    bun install
    # or
    npm install
-   ```
+   \`\`\`
 
 3. **Start development server**
-   ```bash
+   \`\`\`bash
    bun dev
    # or
    npm run dev
-   ```
+   \`\`\`
 
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
@@ -115,10 +115,10 @@ A modern, privacy-first web application for reading EPUB novels with a clean int
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
-```bash
+\`\`\`bash
 bun run build
 # Deploy to Vercel with zero configuration
-```
+\`\`\`
 
 ### Other Platforms
 - **Netlify**: Supports Next.js with static export
