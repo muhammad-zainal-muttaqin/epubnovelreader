@@ -116,7 +116,7 @@ export default function LibraryPage() {
             <UploadButton onUploadComplete={loadBooks} />
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 pb-20">
             {books.map((book) => (
               <BookCard key={book.id} book={book} onDelete={handleDelete} />
             ))}
@@ -126,7 +126,7 @@ export default function LibraryPage() {
 
       {/* FAB for non-empty state */}
       {!isLoading && books.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-8 right-6 z-50 pb-[env(safe-area-inset-bottom)]">
           <UploadButton onUploadComplete={loadBooks} className="h-14 w-14 rounded-full shadow-lg p-0">
             <Upload className="h-6 w-6" />
           </UploadButton>
