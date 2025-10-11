@@ -140,6 +140,10 @@
     @apply text-foreground;
   }
 
+  .prose.dark\:prose-invert {
+    @apply text-foreground;
+  }
+
   .prose h1,
   .prose h2,
   .prose h3,
@@ -147,6 +151,10 @@
   .prose h5,
   .prose h6 {
     @apply text-foreground font-semibold;
+  }
+
+  .prose p {
+    @apply text-foreground;
   }
 
   .prose a {
@@ -158,7 +166,7 @@
   }
 
   .prose code {
-    @apply rounded bg-muted px-1 py-0.5 font-mono text-sm;
+    @apply rounded bg-muted px-1 py-0.5 font-mono text-sm text-foreground;
   }
 
   .prose pre {
@@ -178,6 +186,6 @@
   }
 
   .prose blockquote {
-    @apply border-l-4 border-primary pl-4 italic;
+    @apply border-l-4 border-primary pl-4 italic text-foreground;
   }
 }
