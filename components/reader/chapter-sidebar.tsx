@@ -29,6 +29,8 @@ export function ChapterSidebar({
   const [searchQuery, setSearchQuery] = useState("")
 
   // If TOC chapters exist, use them. Otherwise show all chapters
+  console.log("[ChapterSidebar] tocChapters:", tocChapters?.length || 0, "chapters:", chapters.length)
+  
   const chaptersToShow = tocChapters && tocChapters.length > 0 ? tocChapters : chapters.map(ch => ({
     id: ch.id,
     title: ch.title,
@@ -36,6 +38,8 @@ export function ChapterSidebar({
     endIndex: ch.index,
     href: ch.href
   }))
+  
+  console.log("[ChapterSidebar] Showing:", chaptersToShow.length, "items")
 
   const filteredChapters = chaptersToShow.filter((chapter) => 
     chapter.title.toLowerCase().includes(searchQuery.toLowerCase())
