@@ -238,10 +238,25 @@ export default function ReaderPage() {
   }, [])
 
   const handleBackToTop = useCallback(() => {
-    const contentElement = document.querySelector('[data-chapter-content]')
-    if (contentElement) {
-      contentElement.scrollTo({ top: 0, behavior: 'smooth' })
+    // Try multiple selectors to find the scrollable content
+    const selectors = [
+      '[data-chapter-content]',
+      '.overflow-y-auto',
+      'div[class*="overflow-y-auto"]'
+    ]
+    
+    for (const selector of selectors) {
+      const element = document.querySelector(selector)
+      if (element) {
+        element.scrollTo({ top: 0, behavior: 'smooth' })
+        console.log('[BackToTop] Scrolled using selector:', selector)
+        return
+      }
     }
+    
+    // Fallback: scroll the window
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    console.log('[BackToTop] Fallback: scrolled window')
   }, [])
 
   if (isLoading) {
