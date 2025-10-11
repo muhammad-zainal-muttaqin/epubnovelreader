@@ -18,7 +18,7 @@ export function ReaderHeader({ bookTitle, chapterTitle, progress, onSettingsClic
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/library")}>
+          <Button variant="ghost" size="icon" onClick={() => router.push("/library")} className="h-9 w-9">
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="hidden sm:block">
@@ -29,7 +29,7 @@ export function ReaderHeader({ bookTitle, chapterTitle, progress, onSettingsClic
 
         <div className="flex items-center gap-2">
           <span className="hidden text-xs text-muted-foreground sm:inline">{Math.round(progress)}%</span>
-          <Button variant="ghost" size="sm" onClick={onSettingsClick}>
+          <Button variant="ghost" size="icon" onClick={onSettingsClick} className="h-9 w-9">
             <Settings className="h-4 w-4" />
           </Button>
         </div>
