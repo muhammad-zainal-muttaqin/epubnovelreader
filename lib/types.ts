@@ -22,6 +22,7 @@ export interface Chapter {
   title: string
   content: string // sanitized HTML
   href: string // original href from spine
+  isInTOC?: boolean // whether this chapter appears in the table of contents
 }
 
 export interface ManifestItem {

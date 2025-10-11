@@ -539,33 +539,25 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
   })
   console.log("[v0] Href-to-index mapping created:", hrefToIndexMap.size, "entries")
 
-  // Update chapter titles from TOC if available
+  // Update chapter titles from TOC if available and mark chapters that are in TOC
   if (tocItems.length > 0) {
     console.log("[v0] === Updating chapter titles from TOC ===")
     console.log("[v0] TOC items:", tocItems.length)
-    console.log("[v0] Chapter hrefs in map:", Array.from(hrefToIndexMap.keys()))
     
     tocItems.forEach((tocItem) => {
       const baseHref = normalizePath(tocItem.href.split("#")[0])
       const chapterIndex = hrefToIndexMap.get(baseHref)
       
-      console.log("[v0] Trying to map TOC item:", {
-        label: tocItem.label,
-        href: tocItem.href,
-        baseHref: baseHref,
-        foundIndex: chapterIndex,
-        currentTitle: chapterIndex !== undefined ? chapters[chapterIndex].title : "N/A"
-      })
-      
       if (chapterIndex !== undefined) {
-        // Update chapter title from TOC
+        // Update chapter title from TOC and mark as in TOC
         const oldTitle = chapters[chapterIndex].title
         chapters[chapterIndex].title = tocItem.label
-        console.log("[v0] ✓ Updated chapter", chapterIndex, "from:", oldTitle, "to:", tocItem.label)
-      } else {
-        console.log("[v0] ✗ No chapter found for TOC href:", baseHref)
+        chapters[chapterIndex].isInTOC = true
+        console.log("[v0] ✓ Updated chapter", chapterIndex, "from:", oldTitle, "to:", tocItem.label, "(marked as in TOC)")
       }
     })
+    
+    console.log("[v0] Chapters in TOC:", chapters.filter(c => c.isInTOC).length)
   }
 
   // Rewrite internal links in all chapters

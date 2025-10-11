@@ -26,7 +26,13 @@ export function ChapterSidebar({
 }: ChapterSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("")
 
-  const filteredChapters = chapters.filter((chapter) => chapter.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  // Filter to show only chapters that are in TOC (if any chapters have isInTOC flag)
+  const hasTOC = chapters.some((chapter) => chapter.isInTOC)
+  const chaptersToShow = hasTOC ? chapters.filter((chapter) => chapter.isInTOC) : chapters
+
+  const filteredChapters = chaptersToShow.filter((chapter) => 
+    chapter.title.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const handleSelect = (index: number) => {
     onChapterSelect(index)
