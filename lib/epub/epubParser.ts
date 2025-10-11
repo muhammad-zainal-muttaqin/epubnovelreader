@@ -479,6 +479,8 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
         chapterTitle = `Chapter ${i + 1}`
       }
 
+      console.log("[v0] Chapter", i, "title extracted:", chapterTitle, "from:", href)
+
       chapters.push({
         id: `${bookId}-chapter-${i}`,
         bookId,
