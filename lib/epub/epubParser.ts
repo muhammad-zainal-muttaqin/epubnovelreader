@@ -314,7 +314,7 @@ function replaceImagePaths(html: string, imageMap: Map<string, string>, chapterH
   return result
 }
 
-export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Chapter[] }> {
+export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Chapter[]; tocChapters: import("@/lib/types").TOCChapter[] }> {
   console.log("[v0] === Starting EPUB parsing ===")
 
   const arrayBuffer = await file.arrayBuffer()
@@ -539,25 +539,48 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
   })
   console.log("[v0] Href-to-index mapping created:", hrefToIndexMap.size, "entries")
 
-  // Update chapter titles from TOC if available and mark chapters that are in TOC
+  // Build TOC chapters structure if TOC is available
+  const tocChapters: import("@/lib/types").TOCChapter[] = []
   if (tocItems.length > 0) {
-    console.log("[v0] === Updating chapter titles from TOC ===")
+    console.log("[v0] === Building TOC chapters structure ===")
     console.log("[v0] TOC items:", tocItems.length)
     
-    tocItems.forEach((tocItem) => {
+    tocItems.forEach((tocItem, i) => {
       const baseHref = normalizePath(tocItem.href.split("#")[0])
-      const chapterIndex = hrefToIndexMap.get(baseHref)
+      const startIndex = hrefToIndexMap.get(baseHref)
       
-      if (chapterIndex !== undefined) {
-        // Update chapter title from TOC and mark as in TOC
-        const oldTitle = chapters[chapterIndex].title
-        chapters[chapterIndex].title = tocItem.label
-        chapters[chapterIndex].isInTOC = true
-        console.log("[v0] ✓ Updated chapter", chapterIndex, "from:", oldTitle, "to:", tocItem.label, "(marked as in TOC)")
+      if (startIndex !== undefined) {
+        // Determine end index: next TOC item's start index - 1, or last chapter
+        let endIndex = chapters.length - 1
+        if (i < tocItems.length - 1) {
+          const nextHref = normalizePath(tocItems[i + 1].href.split("#")[0])
+          const nextStartIndex = hrefToIndexMap.get(nextHref)
+          if (nextStartIndex !== undefined && nextStartIndex > startIndex) {
+            endIndex = nextStartIndex - 1
+          }
+        }
+        
+        const tocChapterId = `toc-chapter-${i}`
+        tocChapters.push({
+          id: tocChapterId,
+          title: tocItem.label,
+          startIndex,
+          endIndex,
+          href: tocItem.href
+        })
+        
+        // Mark all spine items in this range with tocChapterId
+        for (let idx = startIndex; idx <= endIndex; idx++) {
+          if (chapters[idx]) {
+            chapters[idx].tocChapterId = tocChapterId
+          }
+        }
+        
+        console.log("[v0] TOC Chapter:", tocItem.label, "→ spine range:", startIndex, "-", endIndex)
       }
     })
     
-    console.log("[v0] Chapters in TOC:", chapters.filter(c => c.isInTOC).length)
+    console.log("[v0] Created", tocChapters.length, "TOC chapters")
   }
 
   // Rewrite internal links in all chapters
@@ -587,5 +610,5 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
     addedAt: Date.now(),
   }
 
-  return { book, chapters }
+  return { book, chapters, tocChapters }
 }

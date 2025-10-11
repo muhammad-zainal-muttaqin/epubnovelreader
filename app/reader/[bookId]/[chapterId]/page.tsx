@@ -6,7 +6,7 @@ import { useTheme } from "next-themes"
 import { getBook, updateBook } from "@/lib/db/books"
 import { getChaptersByBook } from "@/lib/db/chapters"
 import { updateProgress } from "@/lib/db/progress"
-import type { Book, Chapter, ReaderSettings } from "@/lib/types"
+import type { Book, Chapter, ReaderSettings, TOCChapter } from "@/lib/types"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/keys"
 import { ReaderHeader } from "@/components/reader/reader-header"
 import { ReaderFooter } from "@/components/reader/reader-footer"
@@ -26,6 +26,7 @@ export default function ReaderPage() {
 
   const [book, setBook] = useState<Book | null>(null)
   const [chapters, setChapters] = useState<Chapter[]>([])
+  const [tocChapters, setTocChapters] = useState<TOCChapter[]>([])
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0)
   const [settings, setSettings] = useState<ReaderSettings>(DEFAULT_SETTINGS)
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -76,6 +77,13 @@ export default function ReaderPage() {
         if (savedSettings) {
           setSettings(JSON.parse(savedSettings))
           console.log("[v0] Settings loaded from localStorage")
+        }
+        
+        // Load TOC chapters from localStorage
+        const savedTOCChapters = localStorage.getItem(`toc-chapters-${bookId}`)
+        if (savedTOCChapters) {
+          setTocChapters(JSON.parse(savedTOCChapters))
+          console.log("[v0] TOC chapters loaded from localStorage")
         }
       } catch (error) {
         console.error("[v0] Error loading reader data:", error)
@@ -265,6 +273,7 @@ export default function ReaderPage() {
         onChapterSelect={handleChapterSelect}
         open={sidebarOpen}
         onOpenChange={setSidebarOpen}
+        tocChapters={tocChapters}
       />
 
       <SettingsDialog

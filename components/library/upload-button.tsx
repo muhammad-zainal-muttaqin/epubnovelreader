@@ -45,7 +45,7 @@ export function UploadButton({ onUploadComplete, className, children }: { onUplo
 
     try {
       console.log("[v0] Parsing EPUB...")
-      const { book, chapters } = await parseEPUB(file)
+      const { book, chapters, tocChapters } = await parseEPUB(file)
       console.log("[v0] EPUB parsed successfully:", book.title, "Chapters:", chapters.length)
 
       // Save to IndexedDB
@@ -54,6 +54,12 @@ export function UploadButton({ onUploadComplete, className, children }: { onUplo
       console.log("[v0] Book saved, now saving chapters...")
       await saveChapters(chapters)
       console.log("[v0] All data saved successfully")
+      
+      // Save TOC chapters to localStorage
+      if (tocChapters && tocChapters.length > 0) {
+        localStorage.setItem(`toc-chapters-${book.id}`, JSON.stringify(tocChapters))
+        console.log("[v0] TOC chapters saved to localStorage:", tocChapters.length)
+      }
 
       toast({
         title: "Book added successfully",

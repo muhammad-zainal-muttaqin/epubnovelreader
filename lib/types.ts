@@ -22,7 +22,15 @@ export interface Chapter {
   title: string
   content: string // sanitized HTML
   href: string // original href from spine
-  isInTOC?: boolean // whether this chapter appears in the table of contents
+  tocChapterId?: string // ID of the TOC chapter this spine item belongs to
+}
+
+export interface TOCChapter {
+  id: string
+  title: string
+  startIndex: number // first spine item index
+  endIndex: number // last spine item index (inclusive)
+  href: string // original TOC href
 }
 
 export interface ManifestItem {

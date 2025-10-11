@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Search, Check } from "lucide-react"
-import type { Chapter } from "@/lib/types"
+import type { Chapter, TOCChapter } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 interface ChapterSidebarProps {
@@ -15,6 +15,7 @@ interface ChapterSidebarProps {
   onChapterSelect: (index: number) => void
   open: boolean
   onOpenChange: (open: boolean) => void
+  tocChapters?: TOCChapter[]
 }
 
 export function ChapterSidebar({
@@ -23,12 +24,18 @@ export function ChapterSidebar({
   onChapterSelect,
   open,
   onOpenChange,
+  tocChapters,
 }: ChapterSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("")
 
-  // Filter to show only chapters that are in TOC (if any chapters have isInTOC flag)
-  const hasTOC = chapters.some((chapter) => chapter.isInTOC)
-  const chaptersToShow = hasTOC ? chapters.filter((chapter) => chapter.isInTOC) : chapters
+  // If TOC chapters exist, use them. Otherwise show all chapters
+  const chaptersToShow = tocChapters && tocChapters.length > 0 ? tocChapters : chapters.map(ch => ({
+    id: ch.id,
+    title: ch.title,
+    startIndex: ch.index,
+    endIndex: ch.index,
+    href: ch.href
+  }))
 
   const filteredChapters = chaptersToShow.filter((chapter) => 
     chapter.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -60,25 +67,30 @@ export function ChapterSidebar({
             {filteredChapters.length === 0 ? (
               <div className="py-8 text-center text-sm text-muted-foreground">No chapters found</div>
             ) : (
-              filteredChapters.map((chapter) => (
-                <Button
-                  key={chapter.id}
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start text-left font-normal mb-1 h-auto py-3 px-3",
-                    chapter.index === currentChapterIndex && "bg-accent text-accent-foreground",
-                  )}
-                  onClick={() => handleSelect(chapter.index)}
-                  title={chapter.title}
-                >
-                  <div className="flex w-full items-start gap-2">
-                    <span className="flex-1 text-sm leading-relaxed break-words whitespace-normal line-clamp-3">
-                      {chapter.title}
-                    </span>
-                    {chapter.index === currentChapterIndex && <Check className="h-4 w-4 flex-shrink-0 mt-0.5" />}
-                  </div>
-                </Button>
-              ))
+              filteredChapters.map((chapter) => {
+                // Check if current chapter index falls within this TOC chapter's range
+                const isActive = currentChapterIndex >= chapter.startIndex && currentChapterIndex <= chapter.endIndex
+                
+                return (
+                  <Button
+                    key={chapter.id}
+                    variant="ghost"
+                    className={cn(
+                      "w-full justify-start text-left font-normal mb-1 h-auto py-3 px-3",
+                      isActive && "bg-accent text-accent-foreground",
+                    )}
+                    onClick={() => handleSelect(chapter.startIndex)}
+                    title={chapter.title}
+                  >
+                    <div className="flex w-full items-start gap-2">
+                      <span className="flex-1 text-sm leading-relaxed break-words whitespace-normal line-clamp-3">
+                        {chapter.title}
+                      </span>
+                      {isActive && <Check className="h-4 w-4 flex-shrink-0 mt-0.5" />}
+                    </div>
+                  </Button>
+                )
+              })
             )}
           </div>
         </ScrollArea>
