@@ -71,12 +71,11 @@ export default function LibraryPage() {
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={() => router.push("/")}>
-              <Home className="mr-2 h-4 w-4" />
-              Home
+            <Button variant="outline" size="icon" onClick={() => router.push("/")}>
+              <Home className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold">My Library</h1>
+              <h1 className="text-2xl font-bold">My Library</h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 {books.length} {books.length === 1 ? "book" : "books"}
               </p>
