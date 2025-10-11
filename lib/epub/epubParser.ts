@@ -438,10 +438,46 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
 
       // Extract title from content
       const chapterDoc = parser.parseFromString(chapterContent, "text/html")
-      const chapterTitle =
-        chapterDoc.querySelector("h1, h2, h3")?.textContent ||
-        chapterDoc.querySelector("title")?.textContent ||
-        `Chapter ${i + 1}`
+      
+      // Try to get meaningful title
+      let chapterTitle = ""
+      
+      // Strategy 1: Look for heading tags (h1, h2, h3)
+      const heading = chapterDoc.querySelector("h1, h2, h3")
+      if (heading?.textContent && heading.textContent.trim()) {
+        chapterTitle = heading.textContent.trim()
+      }
+      
+      // Strategy 2: If heading is same as book title or too long, try other methods
+      if (!chapterTitle || chapterTitle === title || chapterTitle.length > 100) {
+        // Try to extract from filename
+        const filename = href.split("/").pop()?.replace(/\.(xhtml|html|xml)$/i, "") || ""
+        
+        // Clean up filename to make it readable
+        if (filename) {
+          // Convert common patterns
+          if (filename.toLowerCase().includes("cover")) {
+            chapterTitle = "Cover"
+          } else if (filename.toLowerCase().includes("copyright")) {
+            chapterTitle = "Copyright"
+          } else if (filename.toLowerCase().includes("toc") || filename.toLowerCase().includes("contents")) {
+            chapterTitle = "Contents"
+          } else if (filename.toLowerCase().includes("title")) {
+            chapterTitle = "Title Page"
+          } else if (filename.toLowerCase().match(/^(ch|chap|chapter)[\s_-]*\d+/i)) {
+            // Chapter filenames like "ch01", "chapter_1", etc
+            chapterTitle = filename.replace(/[\s_-]+/g, " ").replace(/^(ch|chap)/i, "Chapter ")
+          } else {
+            // Use filename as-is but capitalize
+            chapterTitle = filename.replace(/[\s_-]+/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+          }
+        }
+      }
+      
+      // Strategy 3: Final fallback
+      if (!chapterTitle) {
+        chapterTitle = `Chapter ${i + 1}`
+      }
 
       chapters.push({
         id: `${bookId}-chapter-${i}`,
