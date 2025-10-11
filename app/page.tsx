@@ -19,7 +19,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto max-w-6xl flex h-16 items-center justify-between px-4">
+        <div className="container mx-auto max-w-5xl flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <BookOpen className="h-6 w-6" />
             <h1 className="text-lg sm:text-xl font-bold">EPUB Novel Reader</h1>
@@ -42,7 +42,7 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 sm:py-20">
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           {/* Hero */}
           <div className="mb-12 sm:mb-16">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
@@ -113,7 +113,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="border-t">
-        <div className="container mx-auto max-w-6xl px-4 py-6 sm:py-8">
+        <div className="container mx-auto max-w-5xl px-4 py-6 sm:py-8">
           <div className="text-center text-muted-foreground">
             <p className="mb-2">&copy; 2025 EPUB Novel Reader</p>
             <Button variant="link" onClick={() => router.push("/privacy")} className="text-muted-foreground">

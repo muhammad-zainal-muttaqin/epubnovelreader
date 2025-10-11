@@ -24,7 +24,7 @@ export default function PrivacyPage() {
       </header>
 
       {/* Content */}
-      <main className="container mx-auto px-4 py-16 max-w-4xl">
+      <main className="container mx-auto px-4 py-16 max-w-5xl">
         <div className="text-center mb-12">
           <Shield className="h-16 w-16 mx-auto mb-4 text-primary" />
           <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>

@@ -69,7 +69,7 @@ export default function LibraryPage() {
     <div className="min-h-screen bg-background scrollbar-hide overflow-y-auto">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b px-4 py-3">
-        <div className="container mx-auto max-w-6xl flex items-center justify-between">
+        <div className="container mx-auto max-w-5xl flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" onClick={() => router.push("/")}>
               <Home className="h-4 w-4" />
@@ -98,7 +98,7 @@ export default function LibraryPage() {
         </div>
       </header>
 
-      <div className="container mx-auto max-w-6xl px-4 py-4">
+      <div className="container mx-auto max-w-5xl px-4 py-4">
         {/* Content */}
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
