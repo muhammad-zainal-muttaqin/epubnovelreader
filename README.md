@@ -22,20 +22,20 @@ A modern web application for reading EPUB novels with a clean interface and comp
 ## Installation
 
 1. Clone this repository
-```bash
+\`\`\`bash
 git clone <repository-url>
 cd epubnovelreader
-```
+\`\`\`
 
 2. Install dependencies
-```bash
+\`\`\`bash
 bun install
-```
+\`\`\`
 
 3. Run development server
-```bash
+\`\`\`bash
 bun dev
-```
+\`\`\`
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
