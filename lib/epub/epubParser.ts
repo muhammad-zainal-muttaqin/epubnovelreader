@@ -608,12 +608,25 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
   console.log("[v0] Total images:", imageMap.size)
   console.log("[v0] TOC items:", tocItems.length)
 
+  // Count only actual story chapters (filter out front/back matter)
+  const actualChapterCount = tocChapters.length > 0
+    ? tocChapters.filter(toc => 
+        toc.title.toLowerCase().includes("chapter") || 
+        toc.title.match(/^(ch|chap)\s*\d+/i) ||
+        toc.title.match(/^\d+[.:]/i) // e.g., "1: Title", "1. Title"
+      ).length
+    : chapters.filter(ch => 
+        ch.title.toLowerCase().includes("chapter") ||
+        ch.title.match(/^(ch|chap)\s*\d+/i) ||
+        ch.title.match(/^\d+[.:]/i)
+      ).length
+
   const book: Book = {
     id: bookId,
     title,
     author,
     cover,
-    totalChapters: tocChapters.length > 0 ? tocChapters.length : chapters.length,
+    totalChapters: actualChapterCount > 0 ? actualChapterCount : (tocChapters.length > 0 ? tocChapters.length : chapters.length),
     currentChapter: 0,
     progress: 0,
     addedAt: Date.now(),
