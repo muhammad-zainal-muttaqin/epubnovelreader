@@ -160,11 +160,27 @@
   .prose h4,
   .prose h5,
   .prose h6 {
-    @apply text-foreground font-semibold;
+    @apply text-foreground font-semibold mt-8 mb-4;
+  }
+  
+  .prose h1 {
+    @apply text-2xl mt-10 mb-6;
+  }
+  
+  .prose h2 {
+    @apply text-xl mt-8 mb-4;
+  }
+  
+  .prose h3 {
+    @apply text-lg mt-6 mb-3;
   }
 
   .prose p {
-    @apply text-foreground;
+    @apply text-foreground mb-4;
+  }
+  
+  .prose p + p {
+    @apply mt-4;
   }
 
   .prose a {
@@ -196,6 +212,19 @@
   }
 
   .prose blockquote {
-    @apply border-l-4 border-primary pl-4 italic text-foreground;
+    @apply border-l-4 border-primary pl-4 italic text-foreground my-6;
+  }
+  
+  .prose ul,
+  .prose ol {
+    @apply my-4 space-y-2;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose hr {
+    @apply my-8 border-border;
   }
 }
