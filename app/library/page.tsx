@@ -8,7 +8,7 @@ import type { Book } from "@/lib/types"
 import { UploadButton } from "@/components/library/upload-button"
 import { BookCard } from "@/components/library/book-card"
 import { EmptyState } from "@/components/library/empty-state"
-import { Loader2, Moon, Sun, Home, BookOpen } from "lucide-react"
+import { Loader2, Moon, Sun, Home, BookOpen, Upload } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
@@ -126,8 +126,10 @@ export default function LibraryPage() {
 
       {/* FAB for non-empty state */}
       {!isLoading && books.length > 0 && (
-        <div className="fixed bottom-6 right-6">
-          <UploadButton onUploadComplete={loadBooks} className="h-14 w-14 rounded-full shadow-lg" />
+        <div className="fixed bottom-6 right-6 z-50">
+          <UploadButton onUploadComplete={loadBooks} className="h-14 w-14 rounded-full shadow-lg p-0">
+            <Upload className="h-6 w-6" />
+          </UploadButton>
         </div>
       )}
     </div>

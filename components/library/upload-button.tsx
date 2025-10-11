@@ -10,9 +10,10 @@ import { saveBook } from "@/lib/db/books"
 import { saveChapters } from "@/lib/db/chapters"
 import { useToast } from "@/hooks/use-toast"
 
-export function UploadButton({ onUploadComplete, className }: { onUploadComplete?: () => void; className?: string }) {
+export function UploadButton({ onUploadComplete, className, children }: { onUploadComplete?: () => void; className?: string; children?: React.ReactNode }) {
   const [isUploading, setIsUploading] = useState(false)
   const { toast } = useToast()
+  const uploadId = `epub-upload-${Math.random().toString(36).substr(2, 9)}`
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -82,20 +83,24 @@ export function UploadButton({ onUploadComplete, className }: { onUploadComplete
         onChange={handleFileChange}
         disabled={isUploading}
         className="hidden"
-        id="epub-upload"
+        id={uploadId}
       />
-      <label htmlFor="epub-upload">
+      <label htmlFor={uploadId}>
         <Button disabled={isUploading} asChild className={className}>
           <span className="cursor-pointer">
             {isUploading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Uploading...
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {children ? null : <span className="ml-2">Uploading...</span>}
               </>
             ) : (
               <>
-                <Upload className="mr-2 h-4 w-4" />
-                Upload EPUB
+                {children || (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload EPUB
+                  </>
+                )}
               </>
             )}
           </span>
