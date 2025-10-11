@@ -10,7 +10,7 @@ import { saveBook } from "@/lib/db/books"
 import { saveChapters } from "@/lib/db/chapters"
 import { useToast } from "@/hooks/use-toast"
 
-export function UploadButton({ onUploadComplete }: { onUploadComplete?: () => void }) {
+export function UploadButton({ onUploadComplete, className }: { onUploadComplete?: () => void; className?: string }) {
   const [isUploading, setIsUploading] = useState(false)
   const { toast } = useToast()
 
@@ -85,7 +85,7 @@ export function UploadButton({ onUploadComplete }: { onUploadComplete?: () => vo
         id="epub-upload"
       />
       <label htmlFor="epub-upload">
-        <Button disabled={isUploading} asChild>
+        <Button disabled={isUploading} asChild className={className}>
           <span className="cursor-pointer">
             {isUploading ? (
               <>

@@ -67,18 +67,18 @@ export default function LibraryPage() {
 
   return (
     <div className="min-h-screen bg-background scrollbar-hide overflow-y-auto">
-      <div className="container mx-auto max-w-6xl px-4 py-8">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+      {/* Header */}
+      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b px-4 py-3">
+        <div className="container mx-auto max-w-6xl flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" onClick={() => router.push("/")}>
               <Home className="h-4 w-4" />
             </Button>
-            <div>
-              <h1 className="text-2xl font-bold">My Library</h1>
-              <p className="mt-1 text-sm text-muted-foreground">
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-xl font-semibold">Library</h1>
+              <span className="text-sm text-muted-foreground">
                 {books.length} {books.length === 1 ? "book" : "books"}
-              </p>
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -87,7 +87,8 @@ export default function LibraryPage() {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label="Toggle theme"
+                aria-label="Settings"
+                className="h-11 w-11"
               >
                 <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -96,6 +97,9 @@ export default function LibraryPage() {
             <UploadButton onUploadComplete={loadBooks} />
           </div>
         </div>
+      </header>
+
+      <div className="container mx-auto max-w-6xl px-4 py-4 pb-24">
 
         {/* Content */}
         {isLoading ? (
@@ -103,7 +107,16 @@ export default function LibraryPage() {
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : books.length === 0 ? (
-          <EmptyState />
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="rounded-full bg-muted/40 p-6 mb-6">
+              <BookOpen className="h-12 w-12 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">No books yet</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+              Upload your first EPUB to start your library.
+            </p>
+            <UploadButton onUploadComplete={loadBooks} />
+          </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
             {books.map((book) => (
@@ -111,6 +124,13 @@ export default function LibraryPage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Sticky CTA */}
+      <div className="fixed inset-x-0 bottom-0 p-4 pb-[calc(16px+env(safe-area-inset-bottom))] bg-gradient-to-t from-background/95 to-transparent backdrop-blur">
+        <div className="container mx-auto max-w-6xl">
+          <UploadButton onUploadComplete={loadBooks} className="w-full" />
+        </div>
       </div>
     </div>
   )
