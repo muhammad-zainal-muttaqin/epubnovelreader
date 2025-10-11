@@ -1,0 +1,106 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Upload, Loader2 } from "lucide-react"
+import { parseEPUB } from "@/lib/epub/epubParser"
+import { saveBook } from "@/lib/db/books"
+import { saveChapters } from "@/lib/db/chapters"
+import { useToast } from "@/hooks/use-toast"
+
+export function UploadButton({ onUploadComplete }: { onUploadComplete?: () => void }) {
+  const [isUploading, setIsUploading] = useState(false)
+  const { toast } = useToast()
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    console.log("[v0] Starting EPUB upload:", file.name, "Size:", file.size)
+
+    // Validate file type
+    if (!file.name.endsWith(".epub")) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an EPUB file",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Validate file size (max 50MB)
+    if (file.size > 50 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Maximum file size is 50MB",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsUploading(true)
+
+    try {
+      console.log("[v0] Parsing EPUB...")
+      const { book, chapters } = await parseEPUB(file)
+      console.log("[v0] EPUB parsed successfully:", book.title, "Chapters:", chapters.length)
+
+      // Save to IndexedDB
+      console.log("[v0] Saving book to IndexedDB...")
+      await saveBook(book)
+      console.log("[v0] Book saved, now saving chapters...")
+      await saveChapters(chapters)
+      console.log("[v0] All data saved successfully")
+
+      toast({
+        title: "Book added successfully",
+        description: `${book.title} by ${book.author}`,
+      })
+
+      onUploadComplete?.()
+    } catch (error) {
+      console.error("[v0] Upload error:", error)
+      toast({
+        title: "Upload failed",
+        description: error instanceof Error ? error.message : "Failed to parse EPUB file",
+        variant: "destructive",
+      })
+    } finally {
+      setIsUploading(false)
+      // Reset input
+      e.target.value = ""
+    }
+  }
+
+  return (
+    <div>
+      <input
+        type="file"
+        accept=".epub"
+        onChange={handleFileChange}
+        disabled={isUploading}
+        className="hidden"
+        id="epub-upload"
+      />
+      <label htmlFor="epub-upload">
+        <Button disabled={isUploading} asChild>
+          <span className="cursor-pointer">
+            {isUploading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Upload className="mr-2 h-4 w-4" />
+                Upload EPUB
+              </>
+            )}
+          </span>
+        </Button>
+      </label>
+    </div>
+  )
+}
