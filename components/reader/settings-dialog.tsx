@@ -85,9 +85,9 @@ export function SettingsDialog({ open, onOpenChange, settings, onSettingsChange 
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="left">Rata Kiri</SelectItem>
-                <SelectItem value="center">Tengah</SelectItem>
-                <SelectItem value="right">Rata Kanan</SelectItem>
+                <SelectItem value="left">Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="right">Right</SelectItem>
                 <SelectItem value="justify">Justify</SelectItem>
               </SelectContent>
             </Select>

@@ -1,17 +1,17 @@
 # EPUB Novel Reader
 
-Aplikasi web modern untuk membaca novel EPUB dengan antarmuka yang bersih dan fitur-fitur yang lengkap.
+A modern web application for reading EPUB novels with a clean interface and comprehensive features.
 
-## Fitur
+## Features
 
-- 📚 Upload dan baca file EPUB
-- 🎨 Antarmuka yang responsif dan modern
-- ⚙️ Pengaturan font, ukuran, dan tema
-- 📖 Navigasi bab yang mudah
-- 💾 Progress pembacaan otomatis
-- 🌙 Mode gelap/terang
+- 📚 Upload and read EPUB files
+- 🎨 Responsive and modern interface
+- ⚙️ Font, size, and theme settings
+- 📖 Easy chapter navigation
+- 💾 Automatic reading progress
+- 🌙 Dark/light mode
 
-## Teknologi
+## Technology
 
 - **Framework**: Next.js 15
 - **Styling**: Tailwind CSS
@@ -19,9 +19,9 @@ Aplikasi web modern untuk membaca novel EPUB dengan antarmuka yang bersih dan fi
 - **UI Components**: Radix UI
 - **Icons**: Lucide React
 
-## Instalasi
+## Installation
 
-1. Clone repository ini
+1. Clone this repository
 ```bash
 git clone <repository-url>
 cd epubnovelreader
@@ -32,24 +32,24 @@ cd epubnovelreader
 bun install
 ```
 
-3. Jalankan development server
+3. Run development server
 ```bash
 bun dev
 ```
 
-4. Buka [http://localhost:3000](http://localhost:3000) di browser
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Penggunaan
+## Usage
 
-1. Upload file EPUB melalui tombol upload
-2. Pilih novel yang ingin dibaca
-3. Gunakan navigasi untuk berpindah antar bab
-4. Sesuaikan pengaturan tampilan sesuai preferensi
+1. Upload EPUB files via the upload button
+2. Select the novel you want to read
+3. Use navigation to switch between chapters
+4. Adjust display settings according to your preferences
 
 ## Deployment
 
-Aplikasi ini dapat di-deploy ke platform seperti Vercel, Netlify, atau platform lainnya yang mendukung Next.js.
+This application can be deployed to platforms like Vercel, Netlify, or other platforms that support Next.js.
 
-## Lisensi
+## License
 
 MIT License
