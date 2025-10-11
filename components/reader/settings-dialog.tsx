@@ -48,6 +48,7 @@ export function SettingsDialog({ open, onOpenChange, settings, onSettingsChange 
                 <SelectItem value="merriweather">Merriweather</SelectItem>
                 <SelectItem value="literata">Literata</SelectItem>
                 <SelectItem value="garamond">Garamond</SelectItem>
+                <SelectItem value="opendyslexic">OpenDyslexic</SelectItem>
                 <SelectItem value="mono">Monospace</SelectItem>
               </SelectContent>
             </Select>

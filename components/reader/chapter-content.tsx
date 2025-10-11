@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react"
 interface ChapterContentProps {
   content: string
   fontSize: number
-  fontFamily: "sans" | "serif" | "mono" | "merriweather" | "open-sans" | "literata" | "garamond"
+  fontFamily: "sans" | "serif" | "mono" | "merriweather" | "open-sans" | "literata" | "garamond" | "opendyslexic"
   lineHeight: number
   maxWidth: number
   textAlign: "left" | "center" | "right" | "justify"
@@ -49,6 +49,7 @@ export function ChapterContent({ content, fontSize, fontFamily, lineHeight, maxW
     "open-sans": "font-[family-name:var(--font-open-sans)]",
     literata: "font-[family-name:var(--font-literata)]",
     garamond: "font-[family-name:var(--font-garamond)]",
+    opendyslexic: "font-['OpenDyslexic']",
   }[fontFamily]
 
   const textAlignClass = {

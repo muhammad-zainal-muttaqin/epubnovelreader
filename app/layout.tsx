@@ -42,6 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+        <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
+      </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${merriweather.variable} ${openSans.variable} ${literata.variable} ${garamond.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <Suspense fallback={null}>{children}</Suspense>
