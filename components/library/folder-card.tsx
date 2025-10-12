@@ -71,12 +71,12 @@ export function FolderCard({ folder, bookCount, bookCovers, onClick, onRename, o
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={handleRename}>
+                  <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(handleRename, 50); }}>
                     <Edit className="mr-2 h-4 w-4" />
                     Rename
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(handleDelete, 50); }} className="text-destructive">
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
                   </DropdownMenuItem>
