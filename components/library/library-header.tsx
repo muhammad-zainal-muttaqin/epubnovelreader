@@ -50,7 +50,13 @@ export function LibraryHeader({
         <div className="flex items-baseline gap-2">
           {currentFolderName ? (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Library</span>
+              <button 
+                onClick={onBackToRoot}
+                className="text-primary hover:text-primary/80 transition-colors cursor-pointer hover:underline"
+                title="Back to Library Root"
+              >
+                Library
+              </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-lg font-semibold text-foreground">{currentFolderName}</span>
             </div>
@@ -104,7 +110,13 @@ export function LibraryHeader({
         <div className="flex items-baseline gap-2">
           {currentFolderName ? (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Library</span>
+              <button 
+                onClick={onBackToRoot}
+                className="text-primary hover:text-primary/80 transition-colors cursor-pointer hover:underline"
+                title="Back to Library Root"
+              >
+                Library
+              </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-xl font-semibold text-foreground">{currentFolderName}</span>
             </div>
