@@ -5,6 +5,7 @@ import { BookOpen, Upload, Moon, Sun, Shield } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
+import { toggleThemeWithTransition } from "@/lib/theme-transition"
 
 export default function HomePage() {
   const router = useRouter()
@@ -29,7 +30,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={(e) => toggleThemeWithTransition(e, setTheme, theme)}
                 aria-label="Toggle theme"
                 className="h-9 w-9"
               >

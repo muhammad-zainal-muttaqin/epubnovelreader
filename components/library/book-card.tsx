@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, Trash2, MoreVertical } from "lucide-react"
+import { BookOpen, Trash2, MoreVertical, FolderInput } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { Book } from "@/lib/types"
 import { useRouter } from "next/navigation"
@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation"
 interface BookCardProps {
   book: Book
   onDelete: (bookId: string) => void
+  onMove?: (bookId: string) => void
 }
 
-export function BookCard({ book, onDelete }: BookCardProps) {
+export function BookCard({ book, onDelete, onMove }: BookCardProps) {
   const router = useRouter()
 
   const handleRead = () => {
@@ -24,6 +25,12 @@ export function BookCard({ book, onDelete }: BookCardProps) {
   const handleDelete = () => {
     if (confirm(`Are you sure you want to delete "${book.title}"?`)) {
       onDelete(book.id)
+    }
+  }
+
+  const handleMove = () => {
+    if (onMove) {
+      onMove(book.id)
     }
   }
 
@@ -52,7 +59,8 @@ export function BookCard({ book, onDelete }: BookCardProps) {
               )}
             </div>
 
-            <div className="mt-3 flex items-center justify-between">
+            <div className="mt-3 space-y-2">
+              {/* Progress info */}
               <div className="text-xs text-muted-foreground">
                 {book.progress > 0 ? (
                   <span>{Math.round(book.progress)}% complete</span>
@@ -61,20 +69,27 @@ export function BookCard({ book, onDelete }: BookCardProps) {
                 )}
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button size="sm" onClick={handleRead}>
+              {/* Action buttons */}
+              <div className="flex items-center justify-between">
+                <Button size="sm" onClick={handleRead} className="flex-1 max-w-[120px]">
                   <BookOpen className="mr-1.5 h-3.5 w-3.5" />
-                  {book.progress > 0 ? "Continue" : "Read"}
+                  <span className="truncate">{book.progress > 0 ? "Continue" : "Read"}</span>
                 </Button>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="sm" variant="ghost">
+                    <Button size="sm" variant="ghost" className="flex-shrink-0">
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={handleDelete} variant="destructive">
+                    {onMove && (
+                      <DropdownMenuItem onClick={() => setTimeout(handleMove, 50)}>
+                        <FolderInput className="mr-2 h-4 w-4" />
+                        Move to Folder
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem onClick={handleDelete} className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
                       Delete
                     </DropdownMenuItem>

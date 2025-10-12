@@ -13,6 +13,15 @@ export interface Book {
   totalChapters: number
   currentChapter?: number
   progress: number // 0-100
+  folderId?: string // folder relation
+}
+
+export interface Folder {
+  id: string
+  name: string
+  slug?: string
+  createdAt: number
+  sortOrder: number
 }
 
 export interface Chapter {

@@ -314,7 +314,7 @@ function replaceImagePaths(html: string, imageMap: Map<string, string>, chapterH
   return result
 }
 
-export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Chapter[]; tocChapters: import("@/lib/types").TOCChapter[] }> {
+export async function parseEPUB(file: File, folderId?: string | null): Promise<{ book: Book; chapters: Chapter[]; tocChapters: import("@/lib/types").TOCChapter[] }> {
   console.log("[v0] === Starting EPUB parsing ===")
 
   const arrayBuffer = await file.arrayBuffer()
@@ -630,6 +630,7 @@ export async function parseEPUB(file: File): Promise<{ book: Book; chapters: Cha
     currentChapter: 0,
     progress: 0,
     addedAt: Date.now(),
+    folderId: folderId || undefined,
   }
 
   return { book, chapters, tocChapters }

@@ -224,9 +224,16 @@ export default function ReaderPage() {
     }))
   }, [])
 
-  const handleThemeToggle = useCallback(() => {
+  const handleThemeToggle = useCallback((event?: React.MouseEvent<HTMLElement>) => {
     const newTheme = theme === "light" ? "dark" : "light"
-    setTheme(newTheme)
+    
+    if (event) {
+      const { toggleThemeWithTransition } = require("@/lib/theme-transition")
+      toggleThemeWithTransition(event, setTheme, theme)
+    } else {
+      setTheme(newTheme)
+    }
+    
     setSettings((prev) => ({
       ...prev,
       theme: newTheme as "light" | "dark",
@@ -353,6 +360,7 @@ export default function ReaderPage() {
         chapterTitle={displayChapterTitle}
         progress={overallProgress}
         onSettingsClick={() => setSettingsOpen(true)}
+        bookFolderId={book.folderId}
       />
 
       <main className="flex-1">

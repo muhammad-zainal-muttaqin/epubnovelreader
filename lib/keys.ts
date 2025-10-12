@@ -9,12 +9,13 @@ export const STORAGE_KEYS = {
 } as const
 
 export const DB_NAME = "NovelReaderDB"
-export const DB_VERSION = 1
+export const DB_VERSION = 3
 
 export const STORES = {
   BOOKS: "books",
   CHAPTERS: "chapters",
   PROGRESS: "progress",
+  FOLDERS: "folders",
 } as const
 
 export const DEFAULT_SETTINGS: import("./types").ReaderSettings = {
