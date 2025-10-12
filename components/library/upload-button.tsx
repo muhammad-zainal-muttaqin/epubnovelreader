@@ -19,7 +19,7 @@ export function UploadButton({ onUploadComplete, className, children, currentFol
     const file = e.target.files?.[0]
     if (!file) return
 
-    console.log("[v0] Starting EPUB upload:", file.name, "Size:", file.size)
+    console.log("Starting EPUB upload:", file.name, "Size:", file.size)
 
     // Validate type
     if (!file.name.endsWith(".epub")) {
@@ -44,21 +44,21 @@ export function UploadButton({ onUploadComplete, className, children, currentFol
     setIsUploading(true)
 
     try {
-      console.log("[v0] Parsing EPUB...")
+      console.log("Parsing EPUB...")
       const { book, chapters, tocChapters } = await parseEPUB(file, currentFolderId)
-      console.log("[v0] EPUB parsed successfully:", book.title, "Chapters:", chapters.length)
+      console.log("EPUB parsed successfully:", book.title, "Chapters:", chapters.length)
 
       // Save to IndexedDB
-      console.log("[v0] Saving book to IndexedDB...")
+      console.log("Saving book to IndexedDB...")
       await saveBook(book)
-      console.log("[v0] Book saved, now saving chapters...")
+      console.log("Book saved, now saving chapters...")
       await saveChapters(chapters)
-      console.log("[v0] All data saved successfully")
+      console.log("All data saved successfully")
       
       // Save TOC chapters
       if (tocChapters && tocChapters.length > 0) {
         localStorage.setItem(`toc-chapters-${book.id}`, JSON.stringify(tocChapters))
-        console.log("[v0] TOC chapters saved to localStorage:", tocChapters.length)
+        console.log("TOC chapters saved to localStorage:", tocChapters.length)
       }
 
       toast({
@@ -68,7 +68,7 @@ export function UploadButton({ onUploadComplete, className, children, currentFol
 
       onUploadComplete?.()
     } catch (error) {
-      console.error("[v0] Upload error:", error)
+      console.error("Upload error:", error)
       toast({
         title: "Upload failed",
         description: error instanceof Error ? error.message : "Failed to parse EPUB file",

@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Merriweather, Open_Sans, Literata, EB_Garamond } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -32,7 +31,7 @@ const garamond = EB_Garamond({
 export const metadata: Metadata = {
   title: "Novel Reader - Your Personal EPUB Library",
   description: "A beautiful and comfortable EPUB reader built with Next.js",
-  generator: "v0.app",
+  generator: "Next.js",
 }
 
 export default function RootLayout({
@@ -50,7 +49,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Suspense fallback={null}>{children}</Suspense>
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   )
