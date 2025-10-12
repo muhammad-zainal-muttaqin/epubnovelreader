@@ -26,6 +26,7 @@ export default function LibraryPage() {
   const [sortBy, setSortBy] = useState<SortBy>("name")
   const [sortByLoaded, setSortByLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isFolderLoading, setIsFolderLoading] = useState(false)
   const [createFolderOpen, setCreateFolderOpen] = useState(false)
   const [editingFolder, setEditingFolder] = useState<{ id: string; name: string } | null>(null)
   const [moveBookOpen, setMoveBookOpen] = useState(false)
@@ -91,16 +92,22 @@ export default function LibraryPage() {
     if (folderSlug) {
       // find folder by slug and set id
       ;(async () => {
-        const f = await (await import("@/lib/db/folders")).getFolderBySlug(folderSlug)
-        if (f) {
-          setCurrentFolderId(f.id)
-        } else {
-          // Invalid folder slug, redirect to library root
-          router.replace("/library")
+        setIsFolderLoading(true)
+        try {
+          const f = await (await import("@/lib/db/folders")).getFolderBySlug(folderSlug)
+          if (f) {
+            setCurrentFolderId(f.id)
+          } else {
+            // Invalid folder slug, redirect to library root
+            router.replace("/library")
+          }
+        } finally {
+          setIsFolderLoading(false)
         }
       })()
     } else {
       setCurrentFolderId(null)
+      setIsFolderLoading(false)
     }
   }, [searchParams])
 
@@ -231,6 +238,7 @@ export default function LibraryPage() {
 
   const handleOpenFolder = (folderId: string) => {
     const folder = folders.find((f) => f.id === folderId)
+    setIsFolderLoading(true)
     setCurrentFolderId(folderId)
     if (folder?.slug) {
       router.push(`/library?folder=${encodeURIComponent(folder.slug)}`, { scroll: false })
@@ -240,6 +248,7 @@ export default function LibraryPage() {
   }
 
   const handleBackToRoot = () => {
+    setIsFolderLoading(true)
     setCurrentFolderId(null)
     router.push(`/library`, { scroll: false })
   }
@@ -394,7 +403,7 @@ export default function LibraryPage() {
       </header>
 
       <div className="container mx-auto max-w-5xl px-4 py-4">
-        {isLoading ? (
+        {isLoading || isFolderLoading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
@@ -438,7 +447,7 @@ export default function LibraryPage() {
         )}
       </div>
 
-      {!isLoading && totalItems > 0 && (
+      {!isLoading && !isFolderLoading && totalItems > 0 && (
         <div className="fixed bottom-8 right-6 z-50 pb-[env(safe-area-inset-bottom)]">
           <UploadButton onUploadComplete={loadData} className="h-14 w-14 rounded-full shadow-lg p-0" currentFolderId={currentFolderId}>
             <Upload className="h-6 w-6" />
