@@ -56,6 +56,49 @@ The folder system allows users to organize their uploaded novels into folders, s
 4. **Portal Management**: Let Radix handle portal lifecycle
 5. **Accessibility Fix**: Added `aria-describedby` to dialog components
 
+**Detailed Debugging Process:**
+
+This was one of the most challenging bugs to debug. Here's the step-by-step process:
+
+1. **Initial Symptoms**: UI would freeze after moving books or renaming folders, requiring F5 refresh
+2. **First Attempt**: Added `router.refresh()` - made things worse, caused data loss
+3. **Console Investigation**: Found `removeChild` errors and `aria-hidden` warnings
+4. **DOM Manipulation Attempt**: Tried removing Radix portals manually - failed
+5. **Focus Management**: Discovered focus/aria-hidden conflicts blocking interactions
+6. **Deferred Actions**: Added `setTimeout` delays to allow popover animations to complete
+7. **Blur Strategy**: Explicitly blur active elements before opening dialogs
+8. **Optimistic Updates**: Update UI immediately, reload data in background
+
+**Key Learning**: Radix UI components manage their own DOM lifecycle. Interfering with this causes conflicts. The solution is to work WITH the framework, not against it.
+
+**Code Pattern for Fixing Similar Issues:**
+```typescript
+// ❌ Wrong - causes freeze
+const handleAction = () => {
+  onAction() // Immediate call
+}
+
+// ✅ Correct - prevents freeze
+const handleAction = () => {
+  setTimeout(() => {
+    onAction()
+  }, 50) // Allow UI to settle
+}
+
+// ✅ Also correct - blur focus
+const handleAction = () => {
+  if (typeof window !== "undefined") {
+    const active = document.activeElement as HTMLElement | null
+    if (active && typeof active.blur === "function") {
+      active.blur()
+    }
+  }
+  setTimeout(() => {
+    onAction()
+  }, 50)
+}
+```
+
 ### 🔄 State Synchronization (RESOLVED)
 
 **Symptom:** Books disappeared from folders after returning from reader.
@@ -63,6 +106,14 @@ The folder system allows users to organize their uploaded novels into folders, s
 **Root Cause:** Race condition between URL sync and data loading in `useEffect`.
 
 **Solution:** Separated URL synchronization from data loading, added proper dependency management.
+
+**Debugging Process:**
+1. **Initial Issue**: Books would disappear after returning from reader
+2. **First Fix**: Added `router.refresh()` - caused more problems
+3. **Investigation**: Found that `loadData()` was called before `currentFolderId` was set
+4. **Solution**: Separated URL sync from data loading, added `currentFolderId` to dependencies
+
+**Key Learning**: State updates are asynchronous. Ensure data loading happens AFTER state is properly set.
 
 ---
 
@@ -122,6 +173,28 @@ app/library/
 - **Optimistic Updates**: UI updates immediately, data reloads in background
 - **Lazy Loading**: Folder slugs loaded only when needed for navigation
 - **Memory Management**: Proper cleanup of event listeners and state
+
+## Debugging Tips & Common Issues
+
+### UI Freeze Prevention
+When working with Radix UI components (dialogs, dropdowns, popovers):
+
+1. **Always defer actions** that trigger dialogs or state changes
+2. **Blur active elements** before opening dialogs to prevent focus conflicts
+3. **Let Radix manage DOM** - don't manually manipulate portals
+4. **Use optimistic updates** for better perceived performance
+
+### State Synchronization
+When dealing with URL parameters and state:
+
+1. **Separate concerns**: URL sync vs data loading
+2. **Proper dependencies**: Include all relevant state in useEffect dependencies
+3. **Avoid race conditions**: Ensure state is set before dependent operations
+
+### Console Warnings to Watch For
+- `aria-hidden` warnings: Usually indicate focus management issues
+- `removeChild` errors: Often caused by manual DOM manipulation
+- `router.refresh()` issues: Can cause data loss in complex state scenarios
 
 ---
 
