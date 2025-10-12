@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getBooksByFolder, type SortBy } from "@/lib/db/books"
+import { getBooksByFolder, getAllBooks, type SortBy } from "@/lib/db/books"
 import { deleteBook, updateBook } from "@/lib/db/books"
 import { deleteChaptersByBook } from "@/lib/db/chapters"
 import { getAllFolders, saveFolder, deleteFolder as deleteFolderDb, updateFolder } from "@/lib/db/folders"
@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation"
 
 export default function LibraryPage() {
   const [books, setBooks] = useState<Book[]>([])
+  const [allBooks, setAllBooks] = useState<Book[]>([])
   const [folders, setFolders] = useState<Folder[]>([])
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<SortBy>("lastReadAt")
@@ -39,12 +40,14 @@ export default function LibraryPage() {
 
   const loadData = async () => {
     try {
-      const [allFolders, allBooks] = await Promise.all([
+      const [allFolders, displayBooks, allBooksData] = await Promise.all([
         getAllFolders(),
-        getBooksByFolder(currentFolderId, sortBy)
+        getBooksByFolder(currentFolderId, sortBy),
+        getAllBooks("name")
       ])
       setFolders(allFolders)
-      setBooks(allBooks)
+      setBooks(displayBooks)
+      setAllBooks(allBooksData)
     } catch (error) {
       console.error("Error loading library:", error)
       toast({
@@ -179,14 +182,13 @@ export default function LibraryPage() {
     try {
       await updateBook(movingBook.id, { folderId: folderId || undefined })
       
-      setBooks((prev) => prev.filter((b) => b.id !== movingBook.id))
-      
       toast({
         title: "Book moved",
         description: `"${movingBook.title}" has been moved`,
       })
       
       setMovingBook(null)
+      await loadData()
     } catch (error) {
       console.error("Error moving book:", error)
       toast({
@@ -198,7 +200,7 @@ export default function LibraryPage() {
   }
 
   const getFolderBookCovers = (folderId: string): string[] => {
-    const folderBooks = books.filter((b) => b.folderId === folderId)
+    const folderBooks = allBooks.filter((b) => b.folderId === folderId)
     return folderBooks
       .filter((b) => b.cover)
       .slice(0, 4)
@@ -206,7 +208,7 @@ export default function LibraryPage() {
   }
 
   const getFolderBookCount = (folderId: string): number => {
-    return books.filter((b) => b.folderId === folderId).length
+    return allBooks.filter((b) => b.folderId === folderId).length
   }
 
   const currentFolder = currentFolderId ? folders.find((f) => f.id === currentFolderId) : null
