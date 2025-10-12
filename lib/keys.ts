@@ -9,7 +9,7 @@ export const STORAGE_KEYS = {
 } as const
 
 export const DB_NAME = "NovelReaderDB"
-export const DB_VERSION = 2
+export const DB_VERSION = 3
 
 export const STORES = {
   BOOKS: "books",

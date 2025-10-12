@@ -56,12 +56,21 @@ export async function initDB(): Promise<IDBDatabase> {
         progressStore.createIndex("lastReadAt", "lastReadAt", { unique: false })
       }
 
-      // Folders store (v2)
+      // Folders store
       if (!db.objectStoreNames.contains(STORES.FOLDERS)) {
         const folderStore = db.createObjectStore(STORES.FOLDERS, { keyPath: "id" })
         folderStore.createIndex("createdAt", "createdAt", { unique: false })
         folderStore.createIndex("sortOrder", "sortOrder", { unique: false })
         folderStore.createIndex("slug", "slug", { unique: true })
+      } else if (oldVersion < 3) {
+        // migration: add slug index
+        const transaction = (event.target as IDBOpenDBRequest).transaction
+        if (transaction) {
+          const folderStore = transaction.objectStore(STORES.FOLDERS)
+          if (!folderStore.indexNames.contains("slug")) {
+            folderStore.createIndex("slug", "slug", { unique: true })
+          }
+        }
       }
     }
   })
