@@ -59,7 +59,8 @@ export function BookCard({ book, onDelete, onMove }: BookCardProps) {
               )}
             </div>
 
-            <div className="mt-3 flex items-center justify-between">
+            <div className="mt-3 space-y-2">
+              {/* Progress info */}
               <div className="text-xs text-muted-foreground">
                 {book.progress > 0 ? (
                   <span>{Math.round(book.progress)}% complete</span>
@@ -68,15 +69,16 @@ export function BookCard({ book, onDelete, onMove }: BookCardProps) {
                 )}
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button size="sm" onClick={handleRead}>
+              {/* Action buttons */}
+              <div className="flex items-center justify-between">
+                <Button size="sm" onClick={handleRead} className="flex-1 max-w-[120px]">
                   <BookOpen className="mr-1.5 h-3.5 w-3.5" />
-                  {book.progress > 0 ? "Continue" : "Read"}
+                  <span className="truncate">{book.progress > 0 ? "Continue" : "Read"}</span>
                 </Button>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="sm" variant="ghost">
+                    <Button size="sm" variant="ghost" className="flex-shrink-0">
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
