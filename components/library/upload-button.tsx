@@ -10,7 +10,7 @@ import { saveBook } from "@/lib/db/books"
 import { saveChapters } from "@/lib/db/chapters"
 import { useToast } from "@/hooks/use-toast"
 
-export function UploadButton({ onUploadComplete, className, children }: { onUploadComplete?: () => void; className?: string; children?: React.ReactNode }) {
+export function UploadButton({ onUploadComplete, className, children, currentFolderId }: { onUploadComplete?: () => void; className?: string; children?: React.ReactNode; currentFolderId?: string | null }) {
   const [isUploading, setIsUploading] = useState(false)
   const { toast } = useToast()
   const uploadId = `epub-upload-${Math.random().toString(36).substr(2, 9)}`
@@ -45,7 +45,7 @@ export function UploadButton({ onUploadComplete, className, children }: { onUplo
 
     try {
       console.log("[v0] Parsing EPUB...")
-      const { book, chapters, tocChapters } = await parseEPUB(file)
+      const { book, chapters, tocChapters } = await parseEPUB(file, currentFolderId)
       console.log("[v0] EPUB parsed successfully:", book.title, "Chapters:", chapters.length)
 
       // Save to IndexedDB

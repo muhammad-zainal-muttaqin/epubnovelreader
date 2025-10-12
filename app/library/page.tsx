@@ -411,7 +411,7 @@ export default function LibraryPage() {
                 ? "Move some books to this folder or upload new ones."
                 : "Upload your first EPUB to start your library."}
             </p>
-            <UploadButton onUploadComplete={loadData} />
+            <UploadButton onUploadComplete={loadData} currentFolderId={currentFolderId} />
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 pb-20">
@@ -440,7 +440,7 @@ export default function LibraryPage() {
 
       {!isLoading && totalItems > 0 && (
         <div className="fixed bottom-8 right-6 z-50 pb-[env(safe-area-inset-bottom)]">
-          <UploadButton onUploadComplete={loadData} className="h-14 w-14 rounded-full shadow-lg p-0">
+          <UploadButton onUploadComplete={loadData} className="h-14 w-14 rounded-full shadow-lg p-0" currentFolderId={currentFolderId}>
             <Upload className="h-6 w-6" />
           </UploadButton>
         </div>

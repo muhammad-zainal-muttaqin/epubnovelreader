@@ -47,7 +47,7 @@ export default function RootLayout({
         <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${merriweather.variable} ${openSans.variable} ${literata.variable} ${garamond.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Suspense fallback={null}>{children}</Suspense>
         </ThemeProvider>
         <Analytics />

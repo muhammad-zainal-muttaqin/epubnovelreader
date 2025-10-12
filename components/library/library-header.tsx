@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { MobileMenu } from "./mobile-menu"
 import { useTheme } from "next-themes"
 import type { SortBy } from "@/lib/db/books"
+import { toggleThemeWithTransition } from "@/lib/theme-transition"
 
 interface LibraryHeaderProps {
   currentFolderName?: string
@@ -49,7 +50,7 @@ export function LibraryHeader({
         />
         <div className="flex items-baseline gap-2">
           {currentFolderName ? (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-lg text-muted-foreground">
               <button 
                 onClick={onBackToRoot}
                 className="text-primary hover:text-primary/80 transition-colors cursor-pointer hover:underline"
@@ -74,7 +75,7 @@ export function LibraryHeader({
         <Button
           variant="outline"
           size="icon"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          onClick={(e) => toggleThemeWithTransition(e, setTheme, theme)}
           aria-label="Toggle theme"
           className="h-9 w-9"
         >
@@ -109,7 +110,7 @@ export function LibraryHeader({
         
         <div className="flex items-baseline gap-2">
           {currentFolderName ? (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-xl text-muted-foreground">
               <button 
                 onClick={onBackToRoot}
                 className="text-primary hover:text-primary/80 transition-colors cursor-pointer hover:underline"
@@ -164,7 +165,7 @@ export function LibraryHeader({
         <Button
           variant="outline"
           size="icon"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          onClick={(e) => toggleThemeWithTransition(e, setTheme, theme)}
           aria-label="Toggle theme"
           className="h-9 w-9"
         >

@@ -10,7 +10,7 @@ interface ReaderFooterProps {
   onNext: () => void
   onFontDecrease: () => void
   onFontIncrease: () => void
-  onThemeToggle: () => void
+  onThemeToggle: (event?: React.MouseEvent<HTMLElement>) => void
   onChapterListToggle: () => void
   onBackToTop: () => void
   theme: "light" | "dark"
@@ -44,7 +44,7 @@ export function ReaderFooter({
             <Type className="h-4 w-4" />
             <span className="text-xs">+</span>
           </Button>
-          <Button variant="ghost" size="sm" onClick={onThemeToggle} className="h-9 w-10 justify-center">
+          <Button variant="ghost" size="sm" onClick={(e) => onThemeToggle(e)} className="h-9 w-10 justify-center">
             {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
           <Button variant="ghost" size="sm" onClick={onBackToTop} className="h-9 w-10 justify-center">
@@ -73,7 +73,7 @@ export function ReaderFooter({
               <Type className="h-4 w-4" />
               <span className="ml-0.5 text-xs">+</span>
             </Button>
-            <Button variant="ghost" size="sm" onClick={onThemeToggle}>
+            <Button variant="ghost" size="sm" onClick={(e) => onThemeToggle(e)}>
               {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
           </div>
