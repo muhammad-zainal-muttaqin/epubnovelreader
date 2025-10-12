@@ -13,9 +13,8 @@ import { FolderCard } from "@/components/library/folder-card"
 import { CreateFolderDialog } from "@/components/library/create-folder-dialog"
 import { MoveBookDialog } from "@/components/library/move-book-dialog"
 import { LibraryHeader } from "@/components/library/library-header"
-import { Loader2, Moon, Sun, BookOpen, Upload } from "lucide-react"
+import { Loader2, BookOpen, Upload } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
@@ -31,7 +30,6 @@ export default function LibraryPage() {
   const [moveBookOpen, setMoveBookOpen] = useState(false)
   const [movingBook, setMovingBook] = useState<Book | null>(null)
   const { toast } = useToast()
-  const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -363,20 +361,6 @@ export default function LibraryPage() {
           sortBy={sortBy}
           onSortChange={setSortBy}
         />
-        <div className="container mx-auto max-w-5xl flex items-center justify-end mt-2">
-            {mounted && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label="Toggle theme"
-                className="h-9 w-9"
-              >
-                <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              </Button>
-            )}
-        </div>
       </header>
 
       <div className="container mx-auto max-w-5xl px-4 py-4">

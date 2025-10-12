@@ -1,9 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Home, ChevronRight, FolderPlus, ArrowUpDown, ArrowLeft } from "lucide-react"
+import { Home, ChevronRight, FolderPlus, ArrowUpDown, ArrowLeft, Moon, Sun } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MobileMenu } from "./mobile-menu"
+import { useTheme } from "next-themes"
 import type { SortBy } from "@/lib/db/books"
 
 interface LibraryHeaderProps {
@@ -32,10 +33,11 @@ export function LibraryHeader({
   sortBy,
   onSortChange,
 }: LibraryHeaderProps) {
+  const { theme, setTheme } = useTheme()
   return (
     <div className="container mx-auto max-w-5xl flex items-center justify-between">
       {/* Mobile: Burger menu */}
-      <div className="flex md:hidden items-center gap-2">
+      <div className="flex md:hidden items-center gap-2 flex-1">
         <MobileMenu
           currentFolderName={currentFolderName}
           bookCount={bookCount}
@@ -59,6 +61,20 @@ export function LibraryHeader({
             {bookCount} {bookCount === 1 ? "item" : "items"}
           </span>
         </div>
+      </div>
+
+      {/* Mobile: Theme toggle */}
+      <div className="flex md:hidden">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label="Toggle theme"
+          className="h-9 w-9"
+        >
+          <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        </Button>
       </div>
 
       {/* Desktop: Full layout */}
@@ -132,6 +148,17 @@ export function LibraryHeader({
             <span className="hidden sm:inline">New Folder</span>
           </Button>
         )}
+
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label="Toggle theme"
+          className="h-9 w-9"
+        >
+          <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        </Button>
       </div>
     </div>
   )
