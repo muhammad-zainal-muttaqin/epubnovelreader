@@ -16,17 +16,7 @@ interface FolderCardProps {
 }
 
 export function FolderCard({ folder, bookCount, bookCovers, onClick, onRename, onDelete }: FolderCardProps) {
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (confirm(`Are you sure you want to delete "${folder.name}"?`)) {
-      onDelete()
-    }
-  }
-
-  const handleRename = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    onRename()
-  }
+  // actions triggered from menu are deferred to allow popover to close first
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg cursor-pointer" onClick={onClick} role="button">
@@ -71,12 +61,12 @@ export function FolderCard({ folder, bookCount, bookCovers, onClick, onRename, o
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(handleRename, 50); }}>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(() => onRename(), 50); }}>
                     <Edit className="mr-2 h-4 w-4" />
                     Rename
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(handleDelete, 50); }} className="text-destructive">
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setTimeout(() => { if (confirm(`Are you sure you want to delete "${folder.name}"?`)) onDelete(); }, 50); }} className="text-destructive">
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
                   </DropdownMenuItem>
