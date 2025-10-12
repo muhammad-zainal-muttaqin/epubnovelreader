@@ -38,10 +38,20 @@ export default function LibraryPage() {
     setMounted(true)
   }, [])
 
+  // Reload data when sortBy changes
+  useEffect(() => {
+    if (mounted) {
+      loadData()
+    }
+  }, [sortBy, mounted])
+
   const loadData = async () => {
     try {
+      // Determine folder sorting based on current sortBy
+      const folderSortBy = sortBy === "name" ? "name" : "createdAt"
+      
       const [allFolders, displayBooks, allBooksData] = await Promise.all([
-        getAllFolders(),
+        getAllFolders(folderSortBy),
         getBooksByFolder(currentFolderId, sortBy),
         getAllBooks("name")
       ])

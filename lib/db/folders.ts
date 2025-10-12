@@ -42,9 +42,17 @@ async function ensureUniqueSlug(name: string, existingId?: string) {
   }
 }
 
-export async function getAllFolders(): Promise<Folder[]> {
+export async function getAllFolders(sortBy: "name" | "createdAt" = "name"): Promise<Folder[]> {
   const folders = await getAllFromStore<Folder>(STORES.FOLDERS)
-  return folders.sort((a, b) => a.sortOrder - b.sortOrder)
+  
+  switch (sortBy) {
+    case "name":
+      return folders.sort((a, b) => a.name.localeCompare(b.name))
+    case "createdAt":
+      return folders.sort((a, b) => b.createdAt - a.createdAt)
+    default:
+      return folders.sort((a, b) => a.sortOrder - b.sortOrder)
+  }
 }
 
 export async function getFolder(folderId: string): Promise<Folder | undefined> {
