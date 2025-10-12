@@ -11,7 +11,7 @@ export default function PrivacyPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="container mx-auto max-w-5xl flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <BookOpen className="h-6 w-6" />
             <h1 className="text-xl font-bold">EPUB Novel Reader</h1>
