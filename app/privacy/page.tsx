@@ -131,7 +131,7 @@ export default function PrivacyPage() {
               <Button onClick={() => router.push("/")}>
                 Back to App
               </Button>
-              <Button variant="outline" onClick={() => window.open("https://github.com", "_blank")}>
+              <Button variant="outline" onClick={() => window.open("https://github.com/muhammad-zainal-muttaqin/epubnovelreader", "_blank")}>
                 View Source Code
               </Button>
             </div>
