@@ -226,6 +226,7 @@ export default function LibraryPage() {
           currentFolderName={currentFolder?.name}
           bookCount={totalItems}
           onBackToRoot={currentFolderId ? handleBackToRoot : undefined}
+          onHomeClick={() => router.push("/")}
           onCreateFolder={() => {
             setEditingFolder(null)
             setCreateFolderOpen(true)
