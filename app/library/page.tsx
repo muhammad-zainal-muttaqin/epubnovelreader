@@ -23,15 +23,8 @@ export default function LibraryPage() {
   const [allBooks, setAllBooks] = useState<Book[]>([])
   const [folders, setFolders] = useState<Folder[]>([])
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
-  const [sortBy, setSortBy] = useState<SortBy>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("library-sort-by")
-      if (saved && ["name", "addedAt", "lastReadAt", "progress"].includes(saved)) {
-        return saved as SortBy
-      }
-    }
-    return "lastReadAt"
-  })
+  const [sortBy, setSortBy] = useState<SortBy>("lastReadAt")
+  const [sortByLoaded, setSortByLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [createFolderOpen, setCreateFolderOpen] = useState(false)
   const [editingFolder, setEditingFolder] = useState<{ id: string; name: string } | null>(null)
@@ -44,14 +37,21 @@ export default function LibraryPage() {
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load sorting preference from localStorage after mount
+    const saved = localStorage.getItem("library-sort-by")
+    if (saved && ["name", "addedAt", "lastReadAt", "progress"].includes(saved)) {
+      setSortBy(saved as SortBy)
+    }
+    setSortByLoaded(true)
   }, [])
 
   // Save sorting preference to localStorage
   useEffect(() => {
-    if (mounted) {
+    if (sortByLoaded) {
       localStorage.setItem("library-sort-by", sortBy)
     }
-  }, [sortBy, mounted])
+  }, [sortBy, sortByLoaded])
 
   // Reload data when sortBy or currentFolderId changes
   useEffect(() => {
