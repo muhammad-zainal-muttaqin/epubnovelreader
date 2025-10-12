@@ -2,11 +2,61 @@
 
 import { STORES } from "../keys"
 import type { Book } from "../types"
-import { getAllFromStore, getFromStore, putInStore, deleteFromStore } from "./idb"
+import { getAllFromStore, getFromStore, putInStore, deleteFromStore, getByIndex } from "./idb"
 
-export async function getAllBooks(): Promise<Book[]> {
+export type SortBy = "name" | "addedAt" | "lastReadAt" | "progress"
+
+export async function getAllBooks(sortBy: SortBy = "lastReadAt"): Promise<Book[]> {
   const books = await getAllFromStore<Book>(STORES.BOOKS)
-  return books.sort((a, b) => (b.lastReadAt || 0) - (a.lastReadAt || 0))
+  
+  switch (sortBy) {
+    case "name":
+      return books.sort((a, b) => a.title.localeCompare(b.title))
+    case "addedAt":
+      return books.sort((a, b) => b.addedAt - a.addedAt)
+    case "progress":
+      return books.sort((a, b) => b.progress - a.progress)
+    case "lastReadAt":
+    default:
+      return books.sort((a, b) => (b.lastReadAt || 0) - (a.lastReadAt || 0))
+  }
+}
+
+export async function getBooksByFolder(folderId: string | null, sortBy: SortBy = "lastReadAt"): Promise<Book[]> {
+  if (folderId === null) {
+    return getBooksWithoutFolder(sortBy)
+  }
+  
+  const books = await getByIndex<Book>(STORES.BOOKS, "folderId", folderId)
+  
+  switch (sortBy) {
+    case "name":
+      return books.sort((a, b) => a.title.localeCompare(b.title))
+    case "addedAt":
+      return books.sort((a, b) => b.addedAt - a.addedAt)
+    case "progress":
+      return books.sort((a, b) => b.progress - a.progress)
+    case "lastReadAt":
+    default:
+      return books.sort((a, b) => (b.lastReadAt || 0) - (a.lastReadAt || 0))
+  }
+}
+
+export async function getBooksWithoutFolder(sortBy: SortBy = "lastReadAt"): Promise<Book[]> {
+  const allBooks = await getAllFromStore<Book>(STORES.BOOKS)
+  const books = allBooks.filter(book => !book.folderId)
+  
+  switch (sortBy) {
+    case "name":
+      return books.sort((a, b) => a.title.localeCompare(b.title))
+    case "addedAt":
+      return books.sort((a, b) => b.addedAt - a.addedAt)
+    case "progress":
+      return books.sort((a, b) => b.progress - a.progress)
+    case "lastReadAt":
+    default:
+      return books.sort((a, b) => (b.lastReadAt || 0) - (a.lastReadAt || 0))
+  }
 }
 
 export async function getBook(bookId: string): Promise<Book | undefined> {

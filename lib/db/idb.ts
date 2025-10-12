@@ -18,12 +18,23 @@ export async function initDB(): Promise<IDBDatabase> {
 
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result
+      const oldVersion = event.oldVersion
 
       // Books store
       if (!db.objectStoreNames.contains(STORES.BOOKS)) {
         const bookStore = db.createObjectStore(STORES.BOOKS, { keyPath: "id" })
         bookStore.createIndex("addedAt", "addedAt", { unique: false })
         bookStore.createIndex("lastReadAt", "lastReadAt", { unique: false })
+        bookStore.createIndex("folderId", "folderId", { unique: false })
+      } else if (oldVersion < 2) {
+        // Migration: add folderId index
+        const transaction = (event.target as IDBOpenDBRequest).transaction
+        if (transaction) {
+          const bookStore = transaction.objectStore(STORES.BOOKS)
+          if (!bookStore.indexNames.contains("folderId")) {
+            bookStore.createIndex("folderId", "folderId", { unique: false })
+          }
+        }
       }
 
       // Chapters store
@@ -43,6 +54,13 @@ export async function initDB(): Promise<IDBDatabase> {
           keyPath: "bookId",
         })
         progressStore.createIndex("lastReadAt", "lastReadAt", { unique: false })
+      }
+
+      // Folders store (v2)
+      if (!db.objectStoreNames.contains(STORES.FOLDERS)) {
+        const folderStore = db.createObjectStore(STORES.FOLDERS, { keyPath: "id" })
+        folderStore.createIndex("createdAt", "createdAt", { unique: false })
+        folderStore.createIndex("sortOrder", "sortOrder", { unique: false })
       }
     }
   })
