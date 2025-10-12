@@ -112,10 +112,9 @@ A modern, privacy-first web application for reading EPUB novels with a clean int
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### Deployment
 \`\`\`bash
 bun run build
-# Deploy to Vercel with zero configuration
 \`\`\`
 
 ### Other Platforms

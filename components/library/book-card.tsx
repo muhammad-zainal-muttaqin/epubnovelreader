@@ -18,7 +18,7 @@ export function BookCard({ book, onDelete, onMove }: BookCardProps) {
 
   const handleRead = () => {
     const chapterIndex = book.currentChapter || 0
-    console.log("[v0] Opening book:", book.id, "at chapter:", chapterIndex)
+    console.log("Opening book:", book.id, "at chapter:", chapterIndex)
     router.push(`/reader/${book.id}/${chapterIndex}`)
   }
 
