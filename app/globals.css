@@ -3,8 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   CSS CUSTOM PROPERTIES - THEME COLORS
+   ========================================================================== */
+
 :root {
-  /* Reading colors */
+  /* Light theme colors */
   --background: oklch(0.98 0.005 85);
   --foreground: oklch(0.15 0.01 85);
   --card: oklch(1 0 0);
@@ -39,7 +43,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* Animation timing functions for Shigure UI */
+  /* Animation timing functions for Shigure UI theme transitions */
   --expo-in: linear(
     0 0%, 0.0085 31.26%, 0.0167 40.94%,
     0.0289 48.86%, 0.0471 55.92%,
@@ -61,7 +65,7 @@
 }
 
 .dark {
-  /* Dark theme */
+  /* Dark theme colors */
   --background: oklch(0.18 0.01 250);
   --foreground: oklch(0.92 0.01 85);
   --card: oklch(0.2 0.01 250);
@@ -96,9 +100,16 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* ==========================================================================
+   TAILWIND CSS THEME CONFIGURATION
+   ========================================================================== */
+
 @theme inline {
+  /* Font families */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Color mappings for Tailwind */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -123,10 +134,14 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  
+  /* Border radius variants */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Sidebar colors */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -137,15 +152,21 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ==========================================================================
+   BASE STYLES & UTILITIES
+   ========================================================================== */
+
 @layer base {
+  /* Global element styles */
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
   }
 
-  /* Hide scrollbars */
+  /* Hide scrollbars globally */
   * {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -155,19 +176,7 @@
     display: none; /* WebKit */
   }
 
-  /* Smooth scrolling disabled */
-  /* html {
-    scroll-behavior: smooth;
-  } */
-
-  /* Webkit smooth scrolling disabled */
-  /* @supports (scroll-behavior: smooth) {
-    * {
-      scroll-behavior: smooth;
-    }
-  } */
-
-  /* Scrollbar hide utility */
+  /* Scrollbar hide utility class */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -177,13 +186,13 @@
     display: none;
   }
 
-  /* Chapter scrolling */
+  /* Chapter reading container scrolling */
   .chapter-scroll {
     scroll-padding-top: 2rem;
-    scroll-behavior: smooth; /* enable only on reading container */
+    scroll-behavior: smooth; /* Smooth scrolling only for reading content */
   }
 
-  /* Smooth transitions */
+  /* Smooth transition utility */
   .smooth-transition {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -192,11 +201,14 @@
   @media (max-width: 768px) {
     .chapter-scroll {
       -webkit-overflow-scrolling: touch;
-      /* scroll-behavior: smooth; disabled */
     }
   }
 
-  /* Prose styles */
+  /* ==========================================================================
+     PROSE STYLES FOR EPUB CONTENT
+     ========================================================================== */
+
+  /* Base prose styling */
   .prose {
     @apply text-foreground;
   }
@@ -205,6 +217,7 @@
     @apply text-foreground;
   }
 
+  /* Headings */
   .prose h1,
   .prose h2,
   .prose h3,
@@ -226,6 +239,7 @@
     @apply text-lg mt-6 mb-3;
   }
 
+  /* Paragraphs */
   .prose p {
     @apply text-foreground mb-4;
   }
@@ -234,14 +248,17 @@
     @apply mt-4;
   }
 
+  /* Links */
   .prose a {
     @apply text-primary underline-offset-2;
   }
 
+  /* Text formatting */
   .prose strong {
     @apply font-semibold text-foreground;
   }
 
+  /* Code blocks */
   .prose code {
     @apply rounded bg-muted px-1 py-0.5 font-mono text-sm text-foreground;
   }
@@ -250,6 +267,7 @@
     @apply rounded-lg bg-muted p-4;
   }
 
+  /* Images and figures */
   .prose img {
     @apply rounded-lg mx-auto block;
   }
@@ -262,10 +280,12 @@
     @apply mx-auto;
   }
 
+  /* Blockquotes */
   .prose blockquote {
     @apply border-l-4 border-primary pl-4 italic text-foreground my-6;
   }
   
+  /* Lists */
   .prose ul,
   .prose ol {
     @apply my-4 space-y-2;
@@ -275,39 +295,47 @@
     @apply mb-2;
   }
   
+  /* Horizontal rules */
   .prose hr {
     @apply my-8 border-border;
   }
 
-  /* View Transition API - Shigure UI */
+  /* ==========================================================================
+     VIEW TRANSITION API - SHIGURE UI THEME TRANSITIONS
+     ========================================================================== */
+
+  /* View transition group timing */
   ::view-transition-group(root) {
     animation-timing-function: var(--expo-in);
   }
 
+  /* New theme transition with Shigure UI GIF mask */
   ::view-transition-new(root) {
     mask: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif') center / 0 no-repeat;
     animation: shigure-scale 3s;
     animation-fill-mode: both;
   }
 
+  /* Old theme transition */
   ::view-transition-old(root),
   .dark::view-transition-old(root) {
     animation: shigure-scale 3s;
     animation-fill-mode: both;
   }
 
+  /* Shigure UI scale animation keyframes */
   @keyframes shigure-scale {
     0% {
-      mask-size: 0;
+      mask-size: 0; /* GIF starts invisible */
     }
     10% {
-      mask-size: 50vmax;
+      mask-size: 50vmax; /* GIF appears quickly */
     }
     90% {
-      mask-size: 50vmax;
+      mask-size: 50vmax; /* GIF "dances" at this size (2.4s duration) */
     }
     100% {
-      mask-size: 10000vmax;
+      mask-size: 10000vmax; /* GIF expands to cover entire screen */
     }
   }
 }
