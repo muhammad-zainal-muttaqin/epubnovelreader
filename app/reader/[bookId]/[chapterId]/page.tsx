@@ -353,6 +353,7 @@ export default function ReaderPage() {
         chapterTitle={displayChapterTitle}
         progress={overallProgress}
         onSettingsClick={() => setSettingsOpen(true)}
+        bookFolderId={book.folderId}
       />
 
       <main className="flex-1">
