@@ -213,18 +213,6 @@ export default function LibraryPage() {
     setMoveBookOpen(false)
     setMovingBook(null)
 
-    // Defensive: remove any lingering dialog overlays that may block pointer events
-    if (typeof window !== "undefined") {
-      setTimeout(() => {
-        try {
-          const overlays = document.querySelectorAll('[data-slot="dialog-overlay"]')
-          overlays.forEach((o) => o.remove())
-        } catch (e) {
-          console.warn("Failed to remove lingering dialog overlays", e)
-        }
-      }, 50)
-    }
-
     try {
       // wait a bit to let the dialog overlay/animation finish so it doesn't block clicks
       await new Promise((res) => setTimeout(res, 300))
