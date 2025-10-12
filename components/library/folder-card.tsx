@@ -18,24 +18,59 @@ interface FolderCardProps {
 export function FolderCard({ folder, bookCount, bookCovers, onClick, onRename, onDelete }: FolderCardProps) {
   // actions triggered from menu are deferred to allow popover to close first
 
+  const getGridClass = (count: number) => {
+    switch (count) {
+      case 1:
+        return "flex items-center justify-center" // Single book - centered
+      case 2:
+        return "grid grid-cols-2" // Two books - side by side
+      case 3:
+        return "grid grid-cols-2" // Three books - 2x2 grid with one empty
+      case 4:
+      default:
+        return "grid grid-cols-2" // Four books - 2x2 grid
+    }
+  }
+
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg cursor-pointer" onClick={onClick} role="button">
       <CardContent className="p-0">
         <div className="flex gap-4 p-4">
           <div className="relative h-40 w-28 flex-shrink-0 overflow-hidden rounded-md bg-muted">
             {bookCovers.length > 0 ? (
-              <div className="grid h-full w-full grid-cols-2 gap-0.5">
-                {bookCovers.slice(0, 4).map((cover, idx) => (
-                  <div key={idx} className="relative overflow-hidden bg-muted">
-                    <img src={cover} alt="" className="h-full w-full object-cover" />
+              <div className={`h-full w-full ${getGridClass(bookCovers.length)} gap-0.5`}>
+                {bookCovers.length === 1 ? (
+                  // Single book - full size
+                  <div className="relative overflow-hidden bg-muted h-full w-full">
+                    <img src={bookCovers[0]} alt="" className="h-full w-full object-cover" />
                   </div>
-                ))}
-                {bookCovers.length < 4 &&
-                  Array.from({ length: 4 - bookCovers.length }).map((_, idx) => (
-                    <div key={`empty-${idx}`} className="bg-muted/50 flex items-center justify-center">
+                ) : bookCovers.length === 2 ? (
+                  // Two books - side by side
+                  bookCovers.map((cover, idx) => (
+                    <div key={idx} className="relative overflow-hidden bg-muted">
+                      <img src={cover} alt="" className="h-full w-full object-cover" />
+                    </div>
+                  ))
+                ) : bookCovers.length === 3 ? (
+                  // Three books - 2x2 grid with one empty
+                  <>
+                    {bookCovers.map((cover, idx) => (
+                      <div key={idx} className="relative overflow-hidden bg-muted">
+                        <img src={cover} alt="" className="h-full w-full object-cover" />
+                      </div>
+                    ))}
+                    <div className="bg-muted/50 flex items-center justify-center">
                       <Folder className="h-6 w-6 text-muted-foreground/50" />
                     </div>
-                  ))}
+                  </>
+                ) : (
+                  // Four or more books - 2x2 grid
+                  bookCovers.slice(0, 4).map((cover, idx) => (
+                    <div key={idx} className="relative overflow-hidden bg-muted">
+                      <img src={cover} alt="" className="h-full w-full object-cover" />
+                    </div>
+                  ))
+                )}
               </div>
             ) : (
               <div className="flex h-full w-full items-center justify-center">
