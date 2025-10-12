@@ -201,14 +201,18 @@ export default function LibraryPage() {
     const bookTitle = movingBook.title
     const bookId = movingBook.id
 
+    // Close dialog first and allow UI to settle before heavy async work
     setMoveBookOpen(false)
     setMovingBook(null)
-    setIsLoading(true)
 
     try {
+      // wait a bit to let the dialog overlay/animation finish so it doesn't block clicks
+      await new Promise((res) => setTimeout(res, 180))
+      setIsLoading(true)
+
       await updateBook(bookId, { folderId: folderId || undefined })
       await loadData()
-      
+
       toast({
         title: "Book moved",
         description: `"${bookTitle}" has been moved`,
@@ -220,7 +224,10 @@ export default function LibraryPage() {
         description: "Failed to move book",
         variant: "destructive",
       })
-      await loadData()
+      // ensure data is consistent
+      try {
+        await loadData()
+      } catch (_) {}
     } finally {
       setIsLoading(false)
     }
