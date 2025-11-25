@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Settings, Loader2, Globe } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { getFolder } from '@/lib/db/folders'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { TranslateMenu } from "./translate-menu"
 import { Badge } from "@/components/ui/badge"
 
@@ -33,6 +33,34 @@ export function ReaderHeader({
 }: ReaderHeaderProps) {
   const router = useRouter()
   const [folderSlug, setFolderSlug] = useState<string | null>(null)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Ignore negative scroll (iOS bounce)
+      if (currentScrollY < 0) return
+
+      // Always show at the very top
+      if (currentScrollY < 10) {
+        setIsVisible(true)
+      } else {
+        // Show when scrolling up, hide when scrolling down
+        if (currentScrollY < lastScrollY.current) {
+          setIsVisible(true)
+        } else if (currentScrollY > lastScrollY.current) {
+          setIsVisible(false)
+        }
+      }
+      
+      lastScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     if (bookFolderId) {
@@ -55,7 +83,7 @@ export function ReaderHeader({
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 smooth-transition">
+    <header className={`fixed top-0 left-0 right-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="container mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-3 min-w-0">
           <Button variant="ghost" size="icon" onClick={handleBackClick} className="h-9 w-9 shrink-0">
