@@ -62,7 +62,7 @@ export function ChapterContent({ content, fontSize, fontFamily, lineHeight, maxW
   return (
     <div ref={contentRef} className="h-full overflow-y-auto scrollbar-hide chapter-scroll" data-chapter-content>
       <article
-        className={cn("prose prose-neutral mx-auto px-4 py-8 pb-24 pb-[calc(6rem+env(safe-area-inset-bottom))]", fontFamilyClass, textAlignClass)}
+        className={cn("prose prose-neutral mx-auto px-4 pt-20 pb-24 pb-[calc(6rem+env(safe-area-inset-bottom))]", fontFamilyClass, textAlignClass)}
         style={{
           fontSize: `${fontSize}px`,
           lineHeight: lineHeight,
