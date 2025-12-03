@@ -20,6 +20,14 @@ import { Loader2 } from "lucide-react"
 import { Toaster } from "@/components/ui/toaster"
 import { toast } from "sonner"
 
+type ReaderCacheEntry = {
+  book: Book
+  chapters: Chapter[]
+  tocChapters: TOCChapter[]
+}
+
+const readerCache = new Map<string, ReaderCacheEntry>()
+
 export default function ReaderPage() {
   const params = useParams()
   const bookId = params.bookId as string
@@ -27,10 +35,16 @@ export default function ReaderPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
 
-  const [book, setBook] = useState<Book | null>(null)
-  const [chapters, setChapters] = useState<Chapter[]>([])
-  const [tocChapters, setTocChapters] = useState<TOCChapter[]>([])
-  const [currentChapterIndex, setCurrentChapterIndex] = useState(0)
+  const cachedData = readerCache.get(bookId)
+  const initialChapterFromParam = Number.parseInt(chapterId)
+  const [book, setBook] = useState<Book | null>(cachedData?.book ?? null)
+  const [chapters, setChapters] = useState<Chapter[]>(cachedData?.chapters ?? [])
+  const [tocChapters, setTocChapters] = useState<TOCChapter[]>(cachedData?.tocChapters ?? [])
+  const [currentChapterIndex, setCurrentChapterIndex] = useState(() => {
+    if (!Number.isNaN(initialChapterFromParam)) return initialChapterFromParam
+    if (cachedData?.book?.currentChapter != null) return cachedData.book.currentChapter
+    return 0
+  })
   const [settings, setSettings] = useState<ReaderSettings>(() => {
     if (typeof window !== "undefined") {
       const savedSettings = localStorage.getItem(STORAGE_KEYS.READER_SETTINGS)
@@ -41,7 +55,7 @@ export default function ReaderPage() {
     return DEFAULT_SETTINGS
   })
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(!cachedData)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
@@ -129,7 +143,17 @@ export default function ReaderPage() {
         
         const savedTOCChapters = localStorage.getItem(`toc-chapters-${bookId}`)
         if (savedTOCChapters) {
-          setTocChapters(JSON.parse(savedTOCChapters))
+          try {
+            const parsed = JSON.parse(savedTOCChapters)
+            setTocChapters(parsed)
+            readerCache.set(bookId, { book: bookData, chapters: chaptersData, tocChapters: parsed })
+          } catch {
+            setTocChapters([])
+            readerCache.set(bookId, { book: bookData, chapters: chaptersData, tocChapters: [] })
+          }
+        } else {
+          setTocChapters([])
+          readerCache.set(bookId, { book: bookData, chapters: chaptersData, tocChapters: [] })
         }
       } catch (error) {
         console.error("Error loading reader data:", error)
@@ -168,6 +192,24 @@ export default function ReaderPage() {
     }
     loadChapterContent()
   }, [chapterId, chapters.length])
+
+  useEffect(() => {
+    if (!chapters.length) return
+    if (!("prefetch" in router) || typeof router.prefetch !== "function") return
+
+    const targets = new Set<number>()
+    for (let offset = 1; offset <= 3; offset++) {
+      const nextIndex = currentChapterIndex + offset
+      const prevIndex = currentChapterIndex - offset
+
+      if (nextIndex < chapters.length) targets.add(nextIndex)
+      if (prevIndex >= 0) targets.add(prevIndex)
+    }
+
+    targets.forEach((index) => {
+      router.prefetch(`/reader/${bookId}/${index}`)
+    })
+  }, [bookId, chapters.length, currentChapterIndex, router])
 
   useEffect(() => {
     if (!book || chapters.length === 0) return
