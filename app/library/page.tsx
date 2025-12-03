@@ -493,8 +493,12 @@ export default function LibraryPage() {
   const visibleItemCount = filteredFolders.length + filteredBooks.length
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-y-auto overflow-x-hidden scrollbar-hide dark:from-[#070b12] dark:via-[#0a0f18] dark:to-[#0d111b]">
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b border-slate-200/70 px-3 py-3 sm:px-4 dark:border-white/10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 overflow-y-auto overflow-x-hidden scrollbar-hide dark:from-[#070b12] dark:via-[#0a0f18] dark:to-[#0d111b]">
+      <div className="pointer-events-none fixed inset-0" aria-hidden>
+        <div className="absolute -left-32 top-20 h-72 w-72 rounded-full bg-primary/15 blur-3xl dark:bg-primary/20" />
+        <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-emerald-400/10 blur-3xl dark:bg-emerald-500/15" />
+      </div>
+      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200/70 px-3 py-3 sm:px-4 dark:bg-[#0a0f18]/80 dark:border-white/10">
         <LibraryHeader
           currentFolderName={currentFolder?.name}
           bookCount={visibleItemCount}

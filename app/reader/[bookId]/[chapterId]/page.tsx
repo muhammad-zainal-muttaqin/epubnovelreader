@@ -538,47 +538,54 @@ export default function ReaderPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-[#f9f7f1] text-foreground dark:bg-gradient-to-b dark:from-[#070b12] dark:via-[#0a0f18] dark:to-[#0d111b]">
-      <ProgressBar progress={overallProgress} />
+    <div className="flex h-screen flex-col bg-[#f9f7f1] text-foreground dark:bg-gradient-to-br dark:from-[#070b12] dark:via-[#0a0f18] dark:to-[#0d111b]">
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+        <div className="absolute -left-32 top-20 h-72 w-72 rounded-full bg-primary/5 blur-3xl dark:bg-primary/10" />
+        <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-emerald-400/5 blur-3xl dark:bg-emerald-500/10" />
+      </div>
+      
+      <div className="relative z-10 flex h-full flex-col">
+        <ProgressBar progress={overallProgress} />
 
-      <ReaderHeader
-        bookTitle={book.title}
-        chapterTitle={displayChapterTitle}
-        progress={overallProgress}
-        onSettingsClick={() => setSettingsOpen(true)}
-        bookFolderId={book.folderId}
-        apiKey={settings.apiKey}
-        isTranslating={isTranslating}
-        currentLanguage={currentLanguage}
-        onTranslate={handleTranslate}
-      />
-
-      <main className="flex-1">
-        <ChapterContent
-          content={translatedContent || currentChapter.content}
-          fontSize={settings.fontSize}
-          fontFamily={settings.fontFamily}
-          lineHeight={settings.lineHeight}
-          maxWidth={settings.maxWidth}
-          textAlign={settings.textAlign}
-          onScroll={setScrollProgress}
+        <ReaderHeader
+          bookTitle={book.title}
+          chapterTitle={displayChapterTitle}
+          progress={overallProgress}
+          onSettingsClick={() => setSettingsOpen(true)}
+          bookFolderId={book.folderId}
+          apiKey={settings.apiKey}
           isTranslating={isTranslating}
-          pendingChunks={pendingChunks}
+          currentLanguage={currentLanguage}
+          onTranslate={handleTranslate}
         />
-      </main>
 
-      <ReaderFooter
-        hasPrev={currentChapterIndex > 0}
-        hasNext={currentChapterIndex < chapters.length - 1}
-        onPrev={handlePrevChapter}
-        onNext={handleNextChapter}
-        onFontDecrease={handleFontDecrease}
-        onFontIncrease={handleFontIncrease}
-        onThemeToggle={handleThemeToggle}
-        onChapterListToggle={() => setSidebarOpen(true)}
-        onBackToTop={handleBackToTop}
-        theme={(theme as "light" | "dark") || "light"}
-      />
+        <main className="flex-1">
+          <ChapterContent
+            content={translatedContent || currentChapter.content}
+            fontSize={settings.fontSize}
+            fontFamily={settings.fontFamily}
+            lineHeight={settings.lineHeight}
+            maxWidth={settings.maxWidth}
+            textAlign={settings.textAlign}
+            onScroll={setScrollProgress}
+            isTranslating={isTranslating}
+            pendingChunks={pendingChunks}
+          />
+        </main>
+
+        <ReaderFooter
+          hasPrev={currentChapterIndex > 0}
+          hasNext={currentChapterIndex < chapters.length - 1}
+          onPrev={handlePrevChapter}
+          onNext={handleNextChapter}
+          onFontDecrease={handleFontDecrease}
+          onFontIncrease={handleFontIncrease}
+          onThemeToggle={handleThemeToggle}
+          onChapterListToggle={() => setSidebarOpen(true)}
+          onBackToTop={handleBackToTop}
+          theme={(theme as "light" | "dark") || "light"}
+        />
+      </div>
 
       <ChapterSidebar
         chapters={chapters}

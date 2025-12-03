@@ -67,6 +67,8 @@ export function ChapterContent({ content, fontSize, fontFamily, lineHeight, maxW
           "prose prose-neutral dark:prose-invert mx-auto px-4 pt-20 pb-24 pb-[calc(6rem+env(safe-area-inset-bottom))]",
           "break-words overflow-wrap-anywhere",
           "[&_*]:!bg-transparent",
+          "[&_*]:!font-[inherit]",
+          "[&_*]:!text-[length:inherit] [&_*]:!leading-[inherit]",
           "[&_p]:!mb-4 [&_p]:!mt-0 [&_p]:!leading-relaxed [&_p]:break-words",
           "[&_div]:!mb-4 [&_div]:!mt-0 [&_div]:break-words",
           "[&_span]:!bg-transparent [&_span]:break-words",
