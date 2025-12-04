@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback, useRef } from "react"
+import React, { useEffect, useState, useCallback, useRef } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { useTheme } from "next-themes"
 import { getBook, updateBook } from "@/lib/db/books"
@@ -8,6 +8,7 @@ import { getChaptersByBook } from "@/lib/db/chapters"
 import { updateProgress } from "@/lib/db/progress"
 import { getTranslation, saveTranslation } from "@/lib/db/translations"
 import { splitHtmlIntoChunks } from "@/lib/html-utils"
+import { toggleThemeWithTransition } from "@/lib/theme-transition"
 import type { Book, Chapter, ReaderSettings, TOCChapter } from "@/lib/types"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/keys"
 import { ReaderHeader } from "@/components/reader/reader-header"
@@ -125,8 +126,8 @@ export default function ReaderPage() {
   const persistScrollPositions = useCallback(() => {
     if (typeof window === "undefined") return
     const payload: Record<string, number> = {}
-    chapterScrollPositionsRef.current.forEach((value, key) => {
-      payload[key] = value
+    chapterScrollPositionsRef.current.forEach((value: number, key: number) => {
+      payload[String(key)] = value
     })
     try {
       localStorage.setItem(`chapter-scroll-${bookId}`, JSON.stringify(payload))
@@ -397,14 +398,14 @@ export default function ReaderPage() {
   )
 
   const handleFontDecrease = useCallback(() => {
-    setSettings((prev) => ({
+    setSettings((prev: ReaderSettings) => ({
       ...prev,
       fontSize: Math.max(14, prev.fontSize - 1),
     }))
   }, [])
 
   const handleFontIncrease = useCallback(() => {
-    setSettings((prev) => ({
+    setSettings((prev: ReaderSettings) => ({
       ...prev,
       fontSize: Math.min(24, prev.fontSize + 1),
     }))
@@ -414,20 +415,19 @@ export default function ReaderPage() {
     const newTheme = theme === "light" ? "dark" : "light"
     
     if (event) {
-      const { toggleThemeWithTransition } = require("@/lib/theme-transition")
       toggleThemeWithTransition(event, setTheme, theme)
     } else {
       setTheme(newTheme)
     }
     
-    setSettings((prev) => ({
+    setSettings((prev: ReaderSettings) => ({
       ...prev,
       theme: newTheme as "light" | "dark",
     }))
   }, [theme, setTheme])
 
   const handleSettingsChange = useCallback((updates: Partial<ReaderSettings>) => {
-    setSettings((prev) => ({ ...prev, ...updates }))
+    setSettings((prev: ReaderSettings) => ({ ...prev, ...updates }))
   }, [])
 
   const currentChapter = chapters[currentChapterIndex]
@@ -436,7 +436,7 @@ export default function ReaderPage() {
   let displayChapterTitle = currentChapter?.title || ""
   if (tocChapters && tocChapters.length > 0) {
     const tocGroup = tocChapters.find(
-      (tc) => currentChapterIndex >= tc.startIndex && currentChapterIndex <= tc.endIndex,
+      (tc: TOCChapter) => currentChapterIndex >= tc.startIndex && currentChapterIndex <= tc.endIndex,
     )
     if (tocGroup) {
       displayChapterTitle = tocGroup.title
@@ -451,13 +451,13 @@ export default function ReaderPage() {
       setTranslatedContent(null)
       setCurrentLanguage("")
       setPendingChunks(0)
-      setSettings((prev) => ({ ...prev, targetLanguage: "" }))
+      setSettings((prev: ReaderSettings) => ({ ...prev, targetLanguage: "" }))
       return
     }
 
     if (!force && currentLanguage === targetLang && translatedContent) return
     
-    setSettings((prev) => ({ ...prev, targetLanguage: targetLang }))
+    setSettings((prev: ReaderSettings) => ({ ...prev, targetLanguage: targetLang }))
 
     if (!force) {
       const cached = await getTranslation(currentChapter.id, targetLang)
@@ -484,7 +484,7 @@ export default function ReaderPage() {
 
     try {
       const imgTags: string[] = []
-      const contentWithPlaceholders = currentChapter.content.replace(/<img[^>]*>/g, (match) => {
+      const contentWithPlaceholders = currentChapter.content.replace(/<img[^>]*>/g, (match: string) => {
         imgTags.push(match)
         return `__IMG_PLACEHOLDER_${imgTags.length - 1}__`
       })
