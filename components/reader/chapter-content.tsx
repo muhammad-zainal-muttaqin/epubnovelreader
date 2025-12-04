@@ -121,7 +121,7 @@ export function ChapterContent({
         className={cn(
           "prose prose-neutral dark:prose-invert mx-auto px-4 pt-20 pb-24 pb-[calc(6rem+env(safe-area-inset-bottom))]",
           "break-words overflow-wrap-anywhere",
-          "[&_*]:!bg-transparent",
+          "[&_*:not(.bg-muted)]:!bg-transparent",
           "[&_*]:!font-[inherit]",
           "[&_*]:!text-[length:inherit] [&_*]:!leading-[inherit]",
           "[&_p]:!mb-4 [&_p]:!mt-0 [&_p]:!leading-relaxed [&_p]:break-words",

@@ -67,6 +67,17 @@ export default function ReaderPage() {
   const scrollSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [initialScrollPercent, setInitialScrollPercent] = useState<number | undefined>(undefined)
   const chapterScrollPositionsRef = useRef<Map<number, number>>(new Map())
+  const scrollProgressRef = useRef(scrollProgress)
+  const currentChapterIndexRef = useRef(currentChapterIndex)
+
+  useEffect(() => {
+    scrollProgressRef.current = scrollProgress
+  }, [scrollProgress])
+
+  useEffect(() => {
+    currentChapterIndexRef.current = currentChapterIndex
+  }, [currentChapterIndex])
+
   const buildSkeletonForChunk = useCallback(
     (htmlChunk: string, seed: number, fontSize = settings.fontSize, maxWidth = settings.maxWidth) => {
       const charsPerLine = Math.max(16, Math.floor(maxWidth / Math.max(fontSize * 0.55, 6)))
@@ -155,14 +166,20 @@ export default function ReaderPage() {
     chapterScrollPositionsRef.current = loaded
 
     const saved = loaded.get(currentChapterIndex)
-    if (typeof saved === "number") {
-      setInitialScrollPercent(saved)
-      setScrollProgress(saved)
-    } else {
-      setInitialScrollPercent(0)
-      setScrollProgress(0)
+    const value = typeof saved === "number" ? saved : 0
+    setInitialScrollPercent(value)
+    setScrollProgress(value)
+  }, [bookId, loadScrollPositions, currentChapterIndex])
+
+  useEffect(() => {
+    // Save scroll position when changing chapters or unmounting
+    return () => {
+      const idx = currentChapterIndexRef.current
+      const scroll = scrollProgressRef.current
+      chapterScrollPositionsRef.current.set(idx, scroll)
+      persistScrollPositions()
     }
-  }, [currentChapterIndex, loadScrollPositions])
+  }, [chapterId, persistScrollPositions])
 
   useEffect(() => {
     const loadData = async () => {
